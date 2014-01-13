@@ -1,7 +1,7 @@
-Implementada tabela hash com busca linear usando a funÁ„o proposta.
-Ainda n„o implementei a funÁ„o rehash. Ent„o, d· pra inserir/buscar, por enquanto, 100 chaves.
+ÔªøImplementada tabela hash com busca linear usando a fun√ß√£o proposta.
+Ainda n√£o implementei a fun√ß√£o rehash. Ent√£o, d√° pra inserir/buscar, por enquanto, 100 chaves.
 
-Tem uns printf's comentados que d· pra usar pra ver o programa trabalhando. Fora isso, o que ele mostra È um 'zero' pra cada inserÁ„o bem-sucedida ou o dado retornado, no caso de uma busca.
+Tem uns printf's comentados que d√° pra usar pra ver o programa trabalhando. Fora isso, o que ele mostra √© um 'zero' pra cada inser√ß√£o bem-sucedida ou o dado retornado, no caso de uma busca.
 
 Tem um makefile.
 
