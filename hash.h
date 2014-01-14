@@ -27,13 +27,19 @@ extern "C" {
 
 typedef struct{
     char index[200];
-    char key[200];
-    unsigned int data;
+    char key[151];
+    int data;
     int filled; //ocupada
 } cell;
 
-int insert(cell* table, unsigned int size, char key[200], unsigned int data);
+#define INSERT 0
+#define SEARCH 1
+#define REHASH 2
 
-unsigned int search(cell* table, unsigned int size, char key[200]);
+int insert(cell* table, unsigned int size, char key[151], int data);
 
-unsigned int hashFunction(char key[200], unsigned int tableSize);
+int search(cell* table, unsigned int size, char key[151]);
+
+unsigned int hashFunction(char key[151], unsigned int tableSize);
+
+int hashTable(int function, char key[151], int data);

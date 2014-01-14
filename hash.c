@@ -9,11 +9,11 @@
 
 int main(void) {
     
-    char key[200], temp;
+    char key[151], temp;
     unsigned int data, size, maxSize, i;
-    float loadFactor, trigger, expansionFactor;
+    /*float loadFactor, trigger, expansionFactor;
     
-    loadFactor = 1/*0.7*/;
+    loadFactor = 1/*0.7*//*;
     expansionFactor = 2;
     maxSize = 100; //vai aumentar quando fizer rehashing (disparado pelo fator de carga limite)
     trigger = loadFactor * maxSize;
@@ -22,7 +22,7 @@ int main(void) {
     
     for(i = 0; i < maxSize; i++){
         table[i].filled = 0;
-    }
+    }*/
     
     while(1){
         
@@ -31,21 +31,21 @@ int main(void) {
         temp = getchar();
         if(temp == ' '){
             scanf("%u", &data);
-            if(size+1 > trigger){
-                maxSize = maxSize * expansionFactor;
+            if(0/*size+1 > trigger*/){
+                //maxSize = maxSize * expansionFactor;
                 //rehash(table, maxSize, key, data);
             }
             else{
                 printf("Inserir:\nKey: '%s' ::: Data: '%u'\n", key, data);
-                size += insert(table, maxSize, key, data);
+                //size += insert(table, maxSize, key, data);
                 //printf("\nsize: '%u'\n", size);
-                printf("0\n");// 0(zero) means: OK.
+                printf("%d\n", hashTable(INSERT, key, data));// 0(zero) means: OK.
             }
         }
         else{
             if(temp == 13 || temp == 10){ //ENTER
                 printf("Buscar:\nKey: '%s'\n", key);
-                printf("%d\n", search(table, maxSize, key));
+                printf("%d\n", hashTable(SEARCH, key, 0));
             }
             else{
                 printf("[FIM]\n");
