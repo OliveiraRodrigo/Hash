@@ -36,6 +36,10 @@ typedef struct{
 #define SEARCH 1
 #define REHASH 2
 
+#define initialSize 100
+#define expansionFactor 2.0
+#define loadFactor 1.0 //0.7
+
 int insert(cell* table, unsigned int size, char key[151], int data);
 
 int search(cell* table, unsigned int size, char key[151]);

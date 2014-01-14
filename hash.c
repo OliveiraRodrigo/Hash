@@ -10,7 +10,8 @@
 int main(void) {
     
     char key[151], temp;
-    unsigned int data, size, maxSize, i;
+    int data;
+    //unsigned int size, maxSize, i;
     /*float loadFactor, trigger, expansionFactor;
     
     loadFactor = 1/*0.7*//*;
@@ -36,7 +37,7 @@ int main(void) {
                 //rehash(table, maxSize, key, data);
             }
             else{
-                printf("Inserir:\nKey: '%s' ::: Data: '%u'\n", key, data);
+                //printf("Inserir:\nKey: '%s' ::: Data: '%d'\n", key, data);
                 //size += insert(table, maxSize, key, data);
                 //printf("\nsize: '%u'\n", size);
                 printf("%d\n", hashTable(INSERT, key, data));// 0(zero) means: OK.
@@ -44,7 +45,7 @@ int main(void) {
         }
         else{
             if(temp == 13 || temp == 10){ //ENTER
-                printf("Buscar:\nKey: '%s'\n", key);
+                //printf("Buscar:\nKey: '%s'\n", key);
                 printf("%d\n", hashTable(SEARCH, key, 0));
             }
             else{

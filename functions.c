@@ -75,33 +75,53 @@ unsigned int hashFunction(char key[151], unsigned int tableSize){
     keySize = strlen(key);
     for(i = 0; i < keySize; i++){
         h += key[i]*31*keySize;
-        //printf("\n%c h: '%u'", key[i], h);
+        //printf("\n[%c] h: '%u'", key[i], h);
     }
     h = h%tableSize;
-    //printf("\nhfinal: '%u'", h);
-    //printf("\n");
+    printf("\nh final: '%u'\n", h);
     return h;
     
 }
 
 int hashTable(int function, char key[151], int data){
     
-    static unsigned int maxSize = 100;
-    static unsigned int size = 0;
-    cell * table = malloc(maxSize*sizeof(cell));
-    unsigned int index, start;
-    unsigned int sizeTest;
+    static unsigned int
+        size = 0,
+        maxSize = initialSize;
+    
+    static float
+        trigger = initialSize * loadFactor;
+    
+    static cell
+        *table;
+    
+    unsigned int
+        i,    
+        index,
+        start,
+        sizeTest;
+    
+    table = (cell*) malloc(initialSize * sizeof(cell));
     
     switch(function){
         
         case INSERT:
-            index = hashFunction(key, size);
+            index = hashFunction(key, maxSize);
             
             if(size == 0){
+                
+                for(i = 0; i < maxSize; i++){
+                    table[i].filled = 0; //fazer isso tmb no rehash
+                }
+                
                 strcpy(table[index].key, key);
                 table[index].data = data;
                 table[index].filled = 1;
+                size++;
                 return 0;
+            }
+            if(size + 1 >= trigger){
+                hashTable(REHASH, key, data);
             }
             
             sizeTest = size - 1;
@@ -119,6 +139,7 @@ int hashTable(int function, char key[151], int data){
                     strcpy(table[index].key, key);
                     table[index].data = data;
                     table[index].filled = 1;
+                    size++;
                     return 0;
                 }
             }
@@ -127,7 +148,7 @@ int hashTable(int function, char key[151], int data){
             break;
             
         case SEARCH:
-            index = hashFunction(key, size);
+            index = hashFunction(key, maxSize);
             
             if(size == 0){
                 return -1;
@@ -158,7 +179,11 @@ int hashTable(int function, char key[151], int data){
             break;
             
         case REHASH:
-            printf("\nrehash\n");
+            maxSize = maxSize * expansionFactor;
+            trigger = maxSize * loadFactor;
+            printf("\nRehash\n");
+            printf("maxSize: %u\n", maxSize);
+            printf("trigger: %f\n", trigger);
             break;
     }
     return 0;
