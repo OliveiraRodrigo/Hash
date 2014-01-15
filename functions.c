@@ -28,12 +28,12 @@ int insert(cell* table, unsigned int size, char key[151], int data){
             strcpy(table[index].key, key);
             table[index].data = data;
             table[index].filled = 1;
-            return 1;
+            return 0;
         }
     }
     while(start != index);
     
-    return 0;
+    return -1;
 }
 
 int search(cell* table, unsigned int size, char key[151]){
@@ -78,7 +78,7 @@ unsigned int hashFunction(char key[151], unsigned int tableSize){
         //printf("\n[%c] h: '%u'", key[i], h);
     }
     h = h%tableSize;
-    printf("\nh final: '%u'\n", h);
+    //printf("\nh final: '%u'\n", h);
     return h;
     
 }
