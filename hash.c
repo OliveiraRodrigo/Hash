@@ -17,8 +17,7 @@ int main(void) {
     maxSize = initialSize; //vai aumentar quando fizer rehashing (disparado pelo fator de carga limite)
     trigger = loadFactor * maxSize;
     size = 0;
-    cell *table = malloc(maxSize * sizeof(cell));
-    cell *tempPtr;
+    cell *table = (cell*) malloc(maxSize * sizeof(cell));
     
     for(i = 0; i < maxSize; i++){
         table[i].filled = 0;
@@ -26,11 +25,11 @@ int main(void) {
     
     while(1){
         
-        printf("\n|");
+        /*printf("\n|");
         for(i = 0; i < maxSize; i++){
             printf(" %d |", table[i].filled);
         }
-        printf("\n\n\n\n\n\n\n");
+        printf("\n\n\n\n\n\n\n");*/
         
         scanf("%s", key);
         
@@ -39,20 +38,9 @@ int main(void) {
             scanf("%d", &data);
             if(size+1 > trigger){
                 printf("Rehashing...\n");
-                tempPtr = table;
-                table += maxSize * sizeof(cell);
                 maxSize = maxSize * expansionFactor;
-                table = malloc((maxSize/expansionFactor) * sizeof(cell));
-                table = tempPtr;
-                
-                /*printf("Reallocated\n|");
-                for(i = 0; i < maxSize; i++){
-                    printf(" %d |", table[i].filled);
-                }
-                printf("\n\n\n\n\n\n\n");*/
-                
                 trigger = loadFactor * maxSize;
-                //realloc(table, maxSize * sizeof(cell));
+                table = (cell*) realloc(table, maxSize * sizeof(cell));
                 if(rehash(table, maxSize, key, data) == 0){
                     size++;
                     printf(" size[%d]\n", size);

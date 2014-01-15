@@ -75,7 +75,12 @@ int search(cell* table, unsigned int size, char key[151]){
             }
         }
         else{
-            index++;
+            if(index < size){
+                index++;
+            }
+            else{
+                index = 0;
+            }
         }
     }
     while(start != index);
@@ -90,7 +95,7 @@ int rehash(cell* table, unsigned int size, char key[151], int data){
     
     oldSize = size / expansionFactor;
     
-    tempTable = malloc(oldSize * sizeof(cell));
+    tempTable = (cell*) malloc(oldSize * sizeof(cell));
     for(i = 0; i < oldSize; i++){
         if(table[i].filled){
             strcpy(tempTable[i].key, table[i].key);
