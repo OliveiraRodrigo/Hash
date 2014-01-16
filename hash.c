@@ -6,12 +6,13 @@
  */
 
 #include "hash.h"
+#include <sys/time.h>
 
 int main(void) {
     
     char key[151], temp;
     int data;
-    unsigned int size, maxSize, i;
+    unsigned int size, maxSize, i, t;
     float trigger;
     
     maxSize = initialSize; //vai aumentar quando fizer rehashing (disparado pelo fator de carga limite)
@@ -19,11 +20,22 @@ int main(void) {
     size = 0;
     cell *table = (cell*) malloc(maxSize * sizeof(cell));
     
+    double ti, tf, tempo; // ti = tempo inicial // tf = tempo final
+    struct timeval tempo_inicio, tempo_fim;
+    
     for(i = 0; i < maxSize; i++){
         table[i].filled = 0;
     }
     
+    t = 1;
     while(1){
+        
+        if(t == 1){
+            ti = 0;
+            tf = 0;
+            tempo = 0;
+            gettimeofday(&tempo_inicio, NULL);
+        }
         
         /*printf("\n|");
         for(i = 0; i < maxSize; i++){
@@ -68,7 +80,7 @@ int main(void) {
         else{
             if(temp == 13 || temp == 10){ //ENTER
                 printf("Buscar: Key: '%s': ", key);
-                printf("%d\n", search(table, maxSize, key));
+                printf("[%d]\n", search(table, maxSize, key));
                 //printf("%d\n", hashTable(SEARCH, key, 0));
             }
             else{
@@ -76,6 +88,17 @@ int main(void) {
                 break;
             }
         }
+        
+        if(t == 100){
+            t = 0;
+            gettimeofday(&tempo_fim,NULL);
+            tf = (double)tempo_fim.tv_usec + ((double)tempo_fim.tv_sec * (1000000.0));
+            ti = (double)tempo_inicio.tv_usec + ((double)tempo_inicio.tv_sec * (1000000.0));
+            tempo = (tf - ti) / 1000000.0;
+            printf(" ::: Tempo: %lf\n", tempo);
+        }
+        t++;
+        
     }
     return (EXIT_SUCCESS);
 }
