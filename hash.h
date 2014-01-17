@@ -35,6 +35,12 @@ typedef struct{
 #define expansionFactor 2.0
 #define loadFactor 0.8
 
+#define OFF   0
+#define ON    1
+#define START 0
+#define GET   1
+#define STOP  2
+
 unsigned int hashFunction(char key[151], unsigned int tableSize);
 
 int insert(cell* table, unsigned int size, char key[151], int data);
@@ -42,3 +48,5 @@ int insert(cell* table, unsigned int size, char key[151], int data);
 int search(cell* table, unsigned int size, char key[151]);
 
 int rehash(cell* table, unsigned int size, char key[151], int data);
+
+double timer(short n, short mark);

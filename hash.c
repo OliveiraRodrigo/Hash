@@ -34,7 +34,8 @@ int main(void) {
     while(1){
         
         if(t == 1){
-            gettimeofday(&timeIn, NULL);
+            //gettimeofday(&timeIn, NULL);
+            timer(0, START);
         }
         
         /*printf("\n|");
@@ -50,7 +51,8 @@ int main(void) {
             scanf("%d", &data);
             if(size+1 > trigger){
                 printf("Rehashing ");
-                gettimeofday(&rehashTimeIn, NULL);
+                //gettimeofday(&rehashTimeIn, NULL);
+                timer(1, START);
                 maxSize = maxSize * expansionFactor;
                 trigger = loadFactor * maxSize;
                 table = (cell*) realloc(table, maxSize * sizeof(cell));
@@ -58,11 +60,11 @@ int main(void) {
                     size++;
                     printf("[%07d]", size);
                     //printf("0\n");
-                    gettimeofday(&rehashTimeOut, NULL);
+                    /*gettimeofday(&rehashTimeOut, NULL);
                     tf = (double)rehashTimeOut.tv_usec + ((double)rehashTimeOut.tv_sec * (1000000.0));
                     ti = (double)rehashTimeIn.tv_usec + ((double)rehashTimeIn.tv_sec * (1000000.0));
-                    time = (tf - ti) / 1000.0;
-                    printf(" %26.3lf\r\n", time);
+                    time = (tf - ti) / 1000.0;*/
+                    printf(" %26.3lf\r\n", timer(1, STOP));
                 }
                 else{
                     //printf("-1\n");
@@ -97,15 +99,55 @@ int main(void) {
         
         if(t == 1000){
             t = 0;
-            gettimeofday(&timeOut, NULL);
+            /*gettimeofday(&timeOut, NULL);
             tf = (double)timeOut.tv_usec + ((double)timeOut.tv_sec * (1000000.0));
             ti = (double)timeIn.tv_usec + ((double)timeIn.tv_sec * (1000000.0));
-            time = (tf - ti) / 1000.0;
+            time = (tf - ti) / 1000.0;*/
             printf("          [%07d]", size);
-            printf(" %12.3lf\r\n", time);
+            printf(" %12.3lf\r\n", timer(0, STOP));
         }
         t++;
         
     }
     return (EXIT_SUCCESS);
+}
+
+double timer(short n, short mark){
+    
+    static short state[2] = {OFF, OFF};
+    static double tIn[2] = {0.0, 0.0};
+    double tOut, time;
+    struct timeval getTime;
+    
+    switch(mark){
+        
+        case START:
+            gettimeofday(&getTime, NULL);
+            tIn[n] = (double)getTime.tv_usec + ((double)getTime.tv_sec * (1000000.0));
+            state[n] = ON;
+            return 0.0;
+            break;
+        
+        case GET:
+            if(state[n] == OFF){
+                return 0.0;
+            }
+            gettimeofday(&getTime, NULL);
+            tOut = (double)getTime.tv_usec + ((double)getTime.tv_sec * (1000000.0));
+            time = (tOut - tIn[n]) / 1000.0;
+            return time;
+            break;
+    
+        case STOP:
+            if(state[n] == OFF){
+                printf("\nstate [%d] AHAAAAAAA\n", state[n]);
+                return 0.0;
+            }
+            gettimeofday(&getTime, NULL);
+            tOut = (double)getTime.tv_usec + ((double)getTime.tv_sec * (1000000.0));
+            time = (tOut - tIn[n]) / 1000.0;
+            state[n] = OFF;
+            return time;
+            break;
+    }
 }
