@@ -23,7 +23,6 @@ extern "C" {
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 typedef struct{
     char index[200];
@@ -32,13 +31,9 @@ typedef struct{
     int filled; //ocupada
 } cell;
 
-#define INSERT 0
-#define SEARCH 1
-#define REHASH 2
-
 #define initialSize 100
 #define expansionFactor 2.0
-#define loadFactor 0.7
+#define loadFactor 0.8
 
 unsigned int hashFunction(char key[151], unsigned int tableSize);
 

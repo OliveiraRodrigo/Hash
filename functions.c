@@ -6,6 +6,7 @@
  */
 
 #include "hash.h"
+#include <string.h>
 
 unsigned int hashFunction(char key[151], unsigned int tableSize){
     
@@ -124,7 +125,7 @@ int rehash(cell* table, unsigned int size, char key[151], int data){
     }
     
     if(insert(table, size, key, data) == 0){
-        printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
+        //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
         return 0;
     }
     
