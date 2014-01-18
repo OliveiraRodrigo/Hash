@@ -30,7 +30,10 @@ int main(void) {
         
         /*printf("\n|");
         for(i = 0; i < maxSize; i++){
-            printf(" %d |", table[i].filled);
+            if(table[i].filled)
+                printf(" %d |", table[i].filled);
+            else
+                printf("   |");
         }
         printf("\n\n\n\n\n\n\n");*/
         
@@ -72,7 +75,7 @@ int main(void) {
         else{
             if(temp == 13 || temp == 10){ //ENTER
                 //printf("Buscar: Key: '%s': ", key);
-                //printf("[%d]\n", search(table, maxSize, key));
+                //printf("[%d]\n", linearSearch(table, maxSize, key));
             }
             else{
                 printf("          [%07d]\r\n", size);

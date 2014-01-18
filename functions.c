@@ -62,6 +62,7 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
         test = table[index].first->next;
         while(1){
             if(test == NULL){
+                test = (node*) malloc (sizeof(node));
                 strcpy(test->key, key);
                 test->data = data;
                 test->next = NULL;
