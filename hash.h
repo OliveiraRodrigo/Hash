@@ -1,19 +1,10 @@
-/* 
- * File:   hash.h
- * Author: Rodrigo
- *
- * Created on 17 de Dezembro de 2013, 14:46
- */
-
 #ifndef HASH_H
+
 #define	HASH_H
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
-
-
 
 #ifdef	__cplusplus
 }
@@ -28,8 +19,20 @@ typedef struct{
     char index[200];
     char key[151];
     int data;
-    int filled; //ocupada
+    short filled; //ocupada
 } cell;
+
+typedef struct node{
+    char key[151];
+    int data;
+    struct node * next;
+} node;
+
+typedef struct{
+    char index[200];
+    short filled; //ocupada
+    node * first;
+} linkedCell;
 
 #define initialSize 100
 #define expansionFactor 2.0
@@ -41,12 +44,16 @@ typedef struct{
 #define GET   1
 #define STOP  2
 
+double timer(short n, short mark);
+
+unsigned int hashFunctionA(char key[151], unsigned int tableSize);
+
 unsigned int hashFunction(char key[151], unsigned int tableSize);
 
-int insert(cell* table, unsigned int size, char key[151], int data);
+int linearInsert(cell* table, unsigned int size, char key[151], int data);
 
-int search(cell* table, unsigned int size, char key[151]);
+int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data);
 
-int rehash(cell* table, unsigned int size, char key[151], int data);
+int linearSearch(cell* table, unsigned int size, char key[151]);
 
-double timer(short n, short mark);
+int linearRehash(cell* table, unsigned int size, char key[151], int data);

@@ -1,14 +1,7 @@
-/* 
- * File:   hash.c
- * Author: Rodrigo Oliveira
- *
- * Created on 17 de Dezembro de 2013, 15:47
- */
-
 #include "hash.h"
 #include <string.h>
 
-unsigned int hashFunction(char key[151], unsigned int tableSize){
+unsigned int hashFunctionA(char key[151], unsigned int tableSize){
     
     unsigned int i, h, keySize;
     
@@ -24,11 +17,15 @@ unsigned int hashFunction(char key[151], unsigned int tableSize){
     
 }
 
-int insert(cell* table, unsigned int size, char key[151], int data){
+unsigned int hashFunction(char key[151], unsigned int tableSize){
+    return 0;
+}
+
+int linearInsert(cell* table, unsigned int size, char key[151], int data){
     
     unsigned int index, start;
     
-    index = hashFunction(key, size);
+    index = hashFunctionA(key, size);
     
     size--;
     start = index;
@@ -53,11 +50,45 @@ int insert(cell* table, unsigned int size, char key[151], int data){
     return -1;
 }
 
-int search(cell* table, unsigned int size, char key[151]){
+int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
+    
+    unsigned int index;
+    node *test;
+    
+    index = hashFunctionA(key, size);
+    
+    if(table[index].filled){ //ocupada
+        test = (node*) malloc (sizeof(node));
+        test = table[index].first->next;
+        while(1){
+            if(test == NULL){
+                strcpy(test->key, key);
+                test->data = data;
+                test->next = NULL;
+                break;
+            }
+            else{
+                test = test->next;
+            }
+        }
+    }
+    else{
+        table[index].filled = 1;
+        table[index].first = (node*) malloc(sizeof(node));
+        strcpy(table[index].first->key, key);
+        table[index].first->data = data;
+        table[index].first->next = NULL;
+        return 0;
+    }
+    
+    return -1;
+}
+
+int linearSearch(cell* table, unsigned int size, char key[151]){
     
     unsigned int index, start;
     
-    index = hashFunction(key, size);
+    index = hashFunctionA(key, size);
     
     size--;
     start = index;
@@ -89,7 +120,7 @@ int search(cell* table, unsigned int size, char key[151]){
     return -1;
 }
 
-int rehash(cell* table, unsigned int size, char key[151], int data){
+int linearRehash(cell* table, unsigned int size, char key[151], int data){
     
     unsigned int oldSize, i;
     cell *tempTable;
@@ -114,7 +145,7 @@ int rehash(cell* table, unsigned int size, char key[151], int data){
     
     for(i = 0; i < oldSize; i++){
         if(tempTable[i].filled){
-            if(insert(table, size, table[i].key, table[i].data) == -1){
+            if(linearInsert(table, size, table[i].key, table[i].data) == -1){
                 //printf("Erro: %d\n", i);
                 return -1;
             }
@@ -124,7 +155,7 @@ int rehash(cell* table, unsigned int size, char key[151], int data){
         }
     }
     
-    if(insert(table, size, key, data) == 0){
+    if(linearInsert(table, size, key, data) == 0){
         //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
         return 0;
     }
