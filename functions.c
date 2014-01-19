@@ -199,19 +199,20 @@ int linearRehash(cell* table, unsigned int size, char key[151], int data){
     return -1;
 }
 */
-int linearRehash(cell* table, cell* reTable, unsigned int size, char key[151], int data){
+int linearRehash(cell* table[2], short alt, unsigned int size, char key[151], int data){
     
     unsigned int oldSize, i;
     
     for(i = 0; i < size; i++){
-        reTable[i].filled = 0;
+        //reTable[i].filled = 0;
+        table[alt][i].filled = 0;
     }
     
     oldSize = size / expansionFactor;
     
     for(i = 0; i < oldSize; i++){
-        if(table[i].filled){
-            if(linearInsert(reTable, size, table[i].key, table[i].data) == -1){
+        if(table[!alt][i].filled){
+            if(linearInsert(table[alt], size, table[!alt][i].key, table[!alt][i].data) == -1){
                 //printf("Erro: %d\n", i);
                 return -1;
             }
@@ -221,7 +222,7 @@ int linearRehash(cell* table, cell* reTable, unsigned int size, char key[151], i
         }
     }
     
-    if(linearInsert(reTable, size, key, data) == -1){
+    if(linearInsert(table[alt], size, key, data) == -1){
         return -1;
     }
     //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);

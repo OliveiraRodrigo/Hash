@@ -58,4 +58,4 @@ int linearSearch(cell* table, unsigned int size, char key[151]);
 
 int linkedSearch(linkedCell* table, unsigned int size, char key[151]);
 
-int linearRehash(cell* table, cell* reTable, unsigned int size, char key[151], int data);
+int linearRehash(cell* table[2], short alt, unsigned int size, char key[151], int data);

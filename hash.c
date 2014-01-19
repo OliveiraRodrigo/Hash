@@ -12,7 +12,7 @@ int main(void) {
     maxSize = initialSize; //vai aumentar quando fizer rehashing (disparado pelo fator de carga limite)
     trigger = 1 + maxSize * loadFactor;
     size = 0;
-    alt = 0;
+    alt = 0; //alterna entre as 2 tabelas, a partir um rehash
     cell *table[2];
     table[alt] = (cell*) malloc(maxSize * sizeof(cell));
     //cell *reTable;
@@ -55,7 +55,7 @@ int main(void) {
                 trigger = 1 + maxSize * loadFactor;
                 //table = (linkedCell*) realloc(table, maxSize * sizeof(linkedCell));
                 table[alt] = (cell*) malloc(maxSize * sizeof(cell));
-                if(linearRehash(table[!alt], table[alt], maxSize, key, data) == 0){
+                if(linearRehash(table, alt, maxSize, key, data) == 0){
                     size++;
                     printf("[%07d]", size);
                     //printf("0\n");
