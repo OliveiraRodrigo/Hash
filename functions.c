@@ -64,18 +64,26 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
         test = (node*) malloc (sizeof(node));
         test = table[index].first->next;
         while(1){
-            if(test == NULL){
-                test = (node*) malloc (sizeof(node));
+            //if(test == NULL){
+            if(table[index].first->next == NULL){
+                /*test = (node*) malloc (sizeof(node));
                 strcpy(test->key, key);
                 test->data = data;
                 test->next = NULL;
+                */
+                table[index].first->next = (node*) malloc (sizeof(node));
+                strcpy(table[index].first->next->key, key);
+                table[index].first->next->data = data;
+                table[index].first->next->next = NULL;
+                return 0;
                 break;
             }
             else{
                 //if(!strcmp(test->key, key)){
                 //    return 0;
                 //}
-                test = test->next;
+                //test = test->next;
+                table[index].first->next = table[index].first->next->next;
             }
         }
     }
@@ -138,14 +146,20 @@ int linkedSearch(linkedCell* table, unsigned int size, char key[151]){
         test = (node*) malloc (sizeof(node));
         test = table[index].first->next;
         while(1){
-            if(test == NULL){
+            //if(test == NULL){
+            if(table[index].first == NULL){
                 return -1;
             }
             else{
-                if(!strcmp(test->key, key)){
+                /*if(!strcmp(test->key, key)){
                     return test->data;
                 }
-                test = test->next;
+                test = test->next;*/
+                if(!strcmp(table[index].first->key, key)){
+                    return table[index].first->data;
+                }
+                //test = test->next;
+                table[index].first = table[index].first->next;
             }
         }
     }

@@ -13,11 +13,10 @@ int main(void) {
     trigger = 1 + maxSize * loadFactor;
     size = 0;
     alt = 0; //alterna entre as 2 tabelas, a partir um rehash
-    cell *table[2];
-    table[alt] = (cell*) malloc(maxSize * sizeof(cell));
-    //cell *reTable;
-    //cell *tablePtr = table;
-    //linkedCell *table = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
+    //cell *table[2];
+    linkedCell *table[2];
+    //table[alt] = (cell*) malloc(maxSize * sizeof(cell));
+    table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
     
     for(i = 0; i < maxSize; i++){
         table[alt][i].filled = 0;
@@ -40,6 +39,18 @@ int main(void) {
             else
                 printf("   |");
         }
+        printf("\n|");
+        for(i = 0; i < maxSize; i++){
+            if(table[alt][i].filled){
+                if(table[alt][i].first->next != NULL){
+                    printf(" * |");
+                }
+                else
+                    printf("   |");
+            }
+            else
+                printf("   |");
+        }
         printf("\n\n\n\n\n\n\n");*/
         
         scanf("%s", key);
@@ -49,7 +60,8 @@ int main(void) {
             scanf("%d", &data);
             if(size+1 == trigger){
                 printf("Rehashing ");
-                timer(1, START);
+                exit(0);
+                /*timer(1, START);
                 alt = !alt;
                 maxSize = maxSize * expansionFactor;
                 trigger = 1 + maxSize * loadFactor;
@@ -64,12 +76,12 @@ int main(void) {
                 else{
                     //printf("-1\n");
                 }
-                free(table[!alt]);
+                free(table[!alt]);*/
             }
             else{
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
-                if(linearInsert(table[alt], maxSize, key, data) == 0){
-                //if(linkedInsert(table, maxSize, key, data) == 0){
+                //if(linearInsert(table[alt], maxSize, key, data) == 0){
+                if(linkedInsert(table[alt], maxSize, key, data) == 0){
                     size++;
                     //printf("[%d]\r\n", size);
                     //printf("0\n");
@@ -83,8 +95,8 @@ int main(void) {
         else{
             if(temp == 13 || temp == 10){ //ENTER
                 //printf("Buscar: Key: '%s': ", key);
-                printf("[%d]\n", linearSearch(table[alt], maxSize, key));
-                //printf("[%d]\n", linkedSearch(table, maxSize, key));
+                //printf("[%d]\n", linearSearch(table[alt], maxSize, key));
+                printf("[%d]\n", linkedSearch(table[alt], maxSize, key));
             }
             else{
                 printf("          [%07d]\r\n", size);
@@ -93,7 +105,7 @@ int main(void) {
             }
         }
         
-        if(t == 1000){
+        if(t == 10){
             t = 0;
             printf("          [%07d]", size);
             printf(" %12.3lf\r\n", timer(0, STOP));

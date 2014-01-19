@@ -16,7 +16,6 @@ extern "C" {
 #include <stdlib.h>
 
 typedef struct{
-    char index[200];
     char key[151];
     int data;
     short filled; //ocupada
@@ -29,14 +28,13 @@ typedef struct node{
 } node;
 
 typedef struct{
-    char index[200];
     short filled; //ocupada
     node * first;
 } linkedCell;
 
 #define initialSize 100
 #define expansionFactor 2.0
-#define loadFactor 0.8
+#define loadFactor 0.8 // 0.0 <= x <= 1.0 
 
 #define OFF   0
 #define ON    1
