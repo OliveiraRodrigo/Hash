@@ -7,15 +7,20 @@ int main(void) {
     int data;
     unsigned int size, maxSize, i, t;
     float trigger;
+    short alt;
     
     maxSize = initialSize; //vai aumentar quando fizer rehashing (disparado pelo fator de carga limite)
     trigger = 1 + maxSize * loadFactor;
     size = 0;
-    cell *table = (cell*) malloc(maxSize * sizeof(cell));
+    alt = 0;
+    cell *table[2];
+    table[alt] = (cell*) malloc(maxSize * sizeof(cell));
+    //cell *reTable;
+    //cell *tablePtr = table;
     //linkedCell *table = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
     
     for(i = 0; i < maxSize; i++){
-        table[i].filled = 0;
+        table[alt][i].filled = 0;
     }
     
     printf("\r\n-----------------------------------------------\r\n");
@@ -30,8 +35,8 @@ int main(void) {
         
         /*printf("\n|");
         for(i = 0; i < maxSize; i++){
-            if(table[i].filled)
-                printf(" %d |", table[i].filled);
+            if(table[alt][i].filled)
+                printf(" %d |", table[alt][i].filled);
             else
                 printf("   |");
         }
@@ -45,10 +50,12 @@ int main(void) {
             if(size+1 == trigger){
                 printf("Rehashing ");
                 timer(1, START);
+                alt = !alt;
                 maxSize = maxSize * expansionFactor;
                 trigger = 1 + maxSize * loadFactor;
-                table = (cell*) realloc(table, maxSize * sizeof(cell));
-                if(linearRehash(table, maxSize, key, data) == 0){
+                //table = (linkedCell*) realloc(table, maxSize * sizeof(linkedCell));
+                table[alt] = (cell*) malloc(maxSize * sizeof(cell));
+                if(linearRehash(table[!alt], table[alt], maxSize, key, data) == 0){
                     size++;
                     printf("[%07d]", size);
                     //printf("0\n");
@@ -57,10 +64,11 @@ int main(void) {
                 else{
                     //printf("-1\n");
                 }
+                free(table[!alt]);
             }
             else{
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
-                if(linearInsert(table, maxSize, key, data) == 0){
+                if(linearInsert(table[alt], maxSize, key, data) == 0){
                 //if(linkedInsert(table, maxSize, key, data) == 0){
                     size++;
                     //printf("[%d]\r\n", size);
@@ -69,13 +77,14 @@ int main(void) {
                 else{
                     //printf("-1\n");
                 }
-                //printf("\nsize: '%u'\n", size);
+            //printf("\nsize: '%u'\n", size);
             }
         }
         else{
             if(temp == 13 || temp == 10){ //ENTER
                 //printf("Buscar: Key: '%s': ", key);
-                //printf("[%d]\n", linearSearch(table, maxSize, key));
+                printf("[%d]\n", linearSearch(table[alt], maxSize, key));
+                //printf("[%d]\n", linkedSearch(table, maxSize, key));
             }
             else{
                 printf("          [%07d]\r\n", size);

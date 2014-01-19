@@ -31,6 +31,9 @@ int linearInsert(cell* table, unsigned int size, char key[151], int data){
     start = index;
     do{
         if(table[index].filled){ //ocupada
+            //if(!strcmp(table[index].key, key)){
+            //    return 0;
+            //}
             if(index < size){
                 index++;
             }
@@ -69,6 +72,9 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
                 break;
             }
             else{
+                //if(!strcmp(test->key, key)){
+                //    return 0;
+                //}
                 test = test->next;
             }
         }
@@ -121,22 +127,53 @@ int linearSearch(cell* table, unsigned int size, char key[151]){
     return -1;
 }
 
+int linkedSearch(linkedCell* table, unsigned int size, char key[151]){
+    
+    unsigned int index;
+    node *test;
+    
+    index = hashFunctionA(key, size);
+    
+    if(table[index].filled){ //ocupada
+        test = (node*) malloc (sizeof(node));
+        test = table[index].first->next;
+        while(1){
+            if(test == NULL){
+                return -1;
+            }
+            else{
+                if(!strcmp(test->key, key)){
+                    return test->data;
+                }
+                test = test->next;
+            }
+        }
+    }
+    else{
+        return -1;
+    }
+    
+    return -1;
+}
+/*
 int linearRehash(cell* table, unsigned int size, char key[151], int data){
     
-    unsigned int oldSize, i;
+    unsigned int oldSize, tempSize, i, j;
     cell *tempTable;
     
     oldSize = size / expansionFactor;
+    j = 0;
     
     tempTable = (cell*) malloc(oldSize * sizeof(cell));
     for(i = 0; i < oldSize; i++){
         if(table[i].filled){
-            strcpy(tempTable[i].key, table[i].key);
-            tempTable[i].data = table[i].data;
-            tempTable[i].filled = 1;
+            strcpy(tempTable[j].key, table[i].key);
+            tempTable[j].data = table[i].data;
             table[i].filled = 0;
+            j++;
         }
     }
+    tempSize = j;
     i = oldSize;
     while(i < size){
         table[i].filled = 0;
@@ -144,22 +181,50 @@ int linearRehash(cell* table, unsigned int size, char key[151], int data){
         i++;
     }
     
-    for(i = 0; i < oldSize; i++){
-        if(tempTable[i].filled){
-            if(linearInsert(table, size, table[i].key, table[i].data) == -1){
-                //printf("Erro: %d\n", i);
-                return -1;
-            }
-            else{
-                //printf("OK: %d\n", i);
-            }
+    for(j = 0; j < tempSize; j++){
+        if(linearInsert(table, size, tempTable[j].key, tempTable[j].data) == -1){
+            //printf("Erro: %d\n", i);
+            return -1;
+        }
+        else{
+            //printf("OK: %d\n", i);
         }
     }
-    
+    free(tempTable);
     if(linearInsert(table, size, key, data) == 0){
         //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
         return 0;
     }
     
     return -1;
+}
+*/
+int linearRehash(cell* table, cell* reTable, unsigned int size, char key[151], int data){
+    
+    unsigned int oldSize, i;
+    
+    for(i = 0; i < size; i++){
+        reTable[i].filled = 0;
+    }
+    
+    oldSize = size / expansionFactor;
+    
+    for(i = 0; i < oldSize; i++){
+        if(table[i].filled){
+            if(linearInsert(reTable, size, table[i].key, table[i].data) == -1){
+                //printf("Erro: %d\n", i);
+                return -1;
+            }
+            
+            //table[i].filled = 0;
+            //printf("OK: %d\n", i);
+        }
+    }
+    
+    if(linearInsert(reTable, size, key, data) == -1){
+        return -1;
+    }
+    //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
+    //table = reTable;
+    return 0;
 }
