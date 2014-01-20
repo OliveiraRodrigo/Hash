@@ -114,15 +114,34 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
     
     unsigned int index;
     int p = 0;
-    //node *test;
-    node *temp;
+    node *test/* = (node*) malloc(sizeof(node))*/;
+    //node *temp;
     
-    //test = linkedSearch(table, size, key);
-    //if(test == NULL)
+    test = *linkedSearch(table, &index, size, key);
+    if(test == NULL){
+        /*test = (node*) malloc (sizeof(node));
+        strcpy(test->key, key);
+        printf("\nqa\n");
+        test->data = data;
+        //test->next = (node*) malloc (sizeof(node));
+        //test->next = NULL;*/
+        table[index].filled = 1;
+        table[index].last->next = (node*) malloc(sizeof(node));
+        strcpy(table[index].last->next->key, key);
+        table[index].last->next->data = data;
+        //table[index].last->next->prev = table[index].last;
+        table[index].last->next->next = NULL;
+        table[index].last = table[index].last->next;
+        return 0;
+    }
+    else{
+        test->data = data;
+        return 0;
+    }
     
-    index = hashFunctionA(key, size);
+    //index = hashFunctionA(key, size);
     
-    if(table[index].filled){ //ocupada
+    /*if(table[index].filled){ //ocupada
         //test = (node*) malloc (sizeof(node));
         //test = table[index].first;
         //temp = table[index].first;
@@ -135,7 +154,7 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
                 strcpy(test->key, key);
                 test->data = data;
                 test->next = (node*) malloc (sizeof(node));
-                test->next = NULL;*/
+                test->next = NULL;*//*
                 
                 table[index].first = (node*) malloc (sizeof(node));
                 strcpy(table[index].first->key, key);
@@ -156,7 +175,7 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
             }
             else{
                 /*if(!strcmp(test->key, key)){
-                    test->data = data;*/
+                    test->data = data;*//*
                 if(!strcmp(table[index].first->key, key)){
                     table[index].first->data = data;
                     //table[index].first = temp;
@@ -187,7 +206,7 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
         table[index].first->next = NULL;
         return 0;
     }
-    return -1;
+    return -1;*/
 }
 
 int linearSearch(cell* table, unsigned int size, char key[151]){
@@ -226,29 +245,28 @@ int linearSearch(cell* table, unsigned int size, char key[151]){
     return -1;
 }
 
-/*int*/ node * linkedSearch(linkedCell* table, unsigned int size, char key[151]){
+/*int*/ node ** linkedSearch(linkedCell* table, unsigned int * index, unsigned int size, char key[151]){
     
-    unsigned int index;
-    node *test;
+    static node *test;
     
-    index = hashFunctionA(key, size);
+    *index = hashFunctionA(key, size);
     
-    if(table[index].filled){ //ocupada
+    if(table[*index].filled){ //ocupada
         //test = (node*) malloc (sizeof(node));
-        test = table[index].first;
+        printf("\nwert\n");
+        test = table[*index].first;
         while(1){
             if(test == NULL){
-            //if(table[index].first == NULL){
+            //if(table[*index].first == NULL){
                 //free(test);
-                printf("\nopa\n");
                 //return -1;
                 return NULL;
+                //return &table[*index].last; //ou test;
             }
             else{
-                printf("\nqqq\n");
                 if(!strcmp(test->key, key)){
                     //return test->data;
-                    return test;
+                    return &test;
                 }
                 /*if(!strcmp(table[index].first->key, key)){
                     return table[index].first->data;
@@ -260,13 +278,14 @@ int linearSearch(cell* table, unsigned int size, char key[151]){
         }
     }
     else{
-        printf("\nXopaX\n");
+        printf("\nvai ret nul\n");
         //return -1;
         return NULL;
+        //return &table[*index].last; //ou test;
     }
-    printf("\nYopaY\n");
     //return -1;
     return NULL;
+    //return &table[*index].last; //ou test;
 }
 /*
 int linearRehash(cell* table, unsigned int size, char key[151], int data){

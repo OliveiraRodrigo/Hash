@@ -1,11 +1,12 @@
 #include "hash.h"
 #include <sys/time.h>
+#include <string.h>
 
 int main(void) {
     
     char key[151], temp;
     int data;
-    unsigned int size, maxSize, i, t;
+    unsigned int size, maxSize, i, t, index;
     float trigger;
     short alt;
     
@@ -15,14 +16,37 @@ int main(void) {
     alt = 0; //alterna entre as 2 tabelas, a partir um rehash
     //cell *table[2];
     linkedCell *table[2];
+    node *test;
     //table[alt] = (cell*) malloc(maxSize * sizeof(cell));
     table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
+    test = (node*) malloc(sizeof(node));
     
     for(i = 0; i < maxSize; i++){
         table[alt][i].filled = 0;
         table[alt][i].first = NULL;
         table[alt][i].last = NULL;
     }
+    
+    /*teste escroto*/
+    table[alt][2].filled = 1;
+    table[alt][2].first = (node*) malloc(sizeof(node));
+    strcpy(table[alt][2].first->key, "a");
+    table[alt][2].first->data = 2345;
+    table[alt][2].first->next = (node*) malloc(sizeof(node));
+    //table[alt][2].first->prev = (node*) malloc(sizeof(node));
+    table[alt][2].last = (node*) malloc(sizeof(node));
+    //table[alt][2].first->next = NULL;
+    //table[alt][2].first->prev = NULL;
+    table[alt][2].last = table[alt][2].first;
+    strcpy(table[alt][2].first->next->key, "z");
+    table[alt][2].first->next->data = 4567;
+    table[alt][2].first->next->next = (node*) malloc(sizeof(node));
+    //table[alt][2].first->next->prev = (node*) malloc(sizeof(node));
+    table[alt][2].first->next->next = NULL;
+    //table[alt][2].first->next->prev = table[alt][2].first;
+    table[alt][2].last = table[alt][2].first->next;
+    size = 2;
+
     
     printf("\r\n-----------------------------------------------\r\n");
     printf("REHASH   |   SIZE  |  TIME (ms)  | RH TIME (ms)");
@@ -44,14 +68,16 @@ int main(void) {
         printf("\n|");
         for(i = 0; i < maxSize; i++){
             if(table[alt][i].filled){
+printf("\ncrap\n");
                 if(table[alt][i].first->next != NULL){
                     printf(" * |");
                 }
                 else
                     printf("   |");
             }
-            else
+            else{
                 printf("   |");
+            }
         }
         printf("\n\n\n\n\n\n\n");
         
@@ -84,7 +110,7 @@ int main(void) {
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
                 //if(linearInsert(table[alt], maxSize, key, data) == 0){
                 if(linkedInsert(table[alt], maxSize, key, data) == 0){
-                    size++;
+                    size++; // nao incrementar, se for substituicao ou, na encadeada, colisao
                     //printf("[%d]\r\n", size);
                     printf("0\n");
                 }
@@ -98,7 +124,14 @@ int main(void) {
             if(temp == 13 || temp == 10){ //ENTER
                 //printf("Buscar: Key: '%s': ", key);
                 //printf("[%d]\n", linearSearch(table[alt], maxSize, key));
-                printf("[%d]\n", linkedSearch(table[alt], maxSize, key)->data);
+                
+//////////////// attrib logo abaixo nao ta rolando /////////////////////////////
+                test = *linkedSearch(table[alt], &index, maxSize, key);
+////////////////////////////////////////////////////////////////////////////////
+                if(test != NULL)
+                    printf("[%d]\n", test->data);
+                else
+                    printf("[-1]\n");
             }
             else{
                 printf("          [%07d]\r\n", size);
