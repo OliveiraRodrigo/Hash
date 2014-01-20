@@ -31,9 +31,10 @@ int linearInsert(cell* table, unsigned int size, char key[151], int data){
     start = index;
     do{
         if(table[index].filled){ //ocupada
-            //if(!strcmp(table[index].key, key)){
-            //    return 0;
-            //}
+            if(!strcmp(table[index].key, key)){
+                table[index].data = data;
+                return 0;
+            }
             if(index < size){
                 index++;
             }
@@ -52,38 +53,48 @@ int linearInsert(cell* table, unsigned int size, char key[151], int data){
     
     return -1;
 }
-
+/*
 int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
     
     unsigned int index;
     node *test;
+    //node *temp;
     
     index = hashFunctionA(key, size);
     
     if(table[index].filled){ //ocupada
-        test = (node*) malloc (sizeof(node));
-        test = table[index].first->next;
+        //test = (node*) malloc (sizeof(node));
+        test = table[index].first;
+        //temp = table[index].first;
+        
         while(1){
-            //if(test == NULL){
-            if(table[index].first->next == NULL){
-                /*test = (node*) malloc (sizeof(node));
+            if(test == NULL){
+            //if(table[index].first == NULL){
+                //test = (node*) malloc (sizeof(node));
                 strcpy(test->key, key);
                 test->data = data;
+                test->next = (node*) malloc (sizeof(node));
                 test->next = NULL;
-                */
+                
+                /*table[index].first = (node*) malloc (sizeof(node));
+                strcpy(table[index].first->key, key);
+                table[index].first->data = data;
                 table[index].first->next = (node*) malloc (sizeof(node));
-                strcpy(table[index].first->next->key, key);
-                table[index].first->next->data = data;
-                table[index].first->next->next = NULL;
+                table[index].first->next = NULL;
+                table[index].first = temp;*//*
                 return 0;
                 break;
             }
             else{
-                //if(!strcmp(test->key, key)){
-                //    return 0;
-                //}
-                //test = test->next;
-                table[index].first->next = table[index].first->next->next;
+                if(!strcmp(test->key, key)){
+                    test->data = data;
+                /*if(!strcmp(table[index].first->key, key)){
+                    table[index].first->data = data;
+                    table[index].first = temp;*//*
+                    return 0;
+                }
+                test = test->next;
+                //table[index].first = table[index].first->next;
             }
         }
     }
@@ -92,10 +103,90 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
         table[index].first = (node*) malloc(sizeof(node));
         strcpy(table[index].first->key, key);
         table[index].first->data = data;
+        table[index].first->next = (node*) malloc(sizeof(node));
         table[index].first->next = NULL;
         return 0;
     }
+    return -1;
+}
+*/
+int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
     
+    unsigned int index;
+    int p = 0;
+    //node *test;
+    node *temp;
+    
+    //test = linkedSearch(table, size, key);
+    //if(test == NULL)
+    
+    index = hashFunctionA(key, size);
+    
+    if(table[index].filled){ //ocupada
+        //test = (node*) malloc (sizeof(node));
+        //test = table[index].first;
+        //temp = table[index].first;
+        
+        while(1){
+            //if(test == NULL){
+            if(table[index].first == NULL){
+                printf("\nffffff\n");
+                /*test = (node*) malloc (sizeof(node));
+                strcpy(test->key, key);
+                test->data = data;
+                test->next = (node*) malloc (sizeof(node));
+                test->next = NULL;*/
+                
+                table[index].first = (node*) malloc (sizeof(node));
+                strcpy(table[index].first->key, key);
+                table[index].first->data = data;
+                table[index].first->next = (node*) malloc (sizeof(node));
+                table[index].first->next = NULL;
+                //table[index].first = temp;
+                
+                while(p > 0){
+                    temp = table[index].first;
+                    table[index].first = table[index].first->prev;
+                    table[index].first->next = temp;
+                    p--;
+                }
+                
+                return 0;
+                break;
+            }
+            else{
+                /*if(!strcmp(test->key, key)){
+                    test->data = data;*/
+                if(!strcmp(table[index].first->key, key)){
+                    table[index].first->data = data;
+                    //table[index].first = temp;
+                    return 0;
+                }
+                //test = test->next;
+                                printf("\nf1\n");
+                temp = table[index].first;
+                                printf("\nf2\n");
+                table[index].first = table[index].first->next;
+                                printf("\nf3\n");
+                //table[index].first->prev = (node*) malloc(sizeof(node));
+                                printf("\nf3.5\n");
+                table[index].first->prev = temp;
+                                printf("\nf4\n");
+                p++;
+            }
+        }
+    }
+    else{
+        table[index].filled = 1;
+        table[index].first = (node*) malloc(sizeof(node));
+        strcpy(table[index].first->key, key);
+        table[index].first->data = data;
+        table[index].first->prev = (node*) malloc(sizeof(node));
+        table[index].first->next = (node*) malloc(sizeof(node));
+        table[index].first->prev = NULL;
+        table[index].first->next = NULL;
+        return 0;
+    }
     return -1;
 }
 
@@ -135,7 +226,7 @@ int linearSearch(cell* table, unsigned int size, char key[151]){
     return -1;
 }
 
-int linkedSearch(linkedCell* table, unsigned int size, char key[151]){
+/*int*/ node * linkedSearch(linkedCell* table, unsigned int size, char key[151]){
     
     unsigned int index;
     node *test;
@@ -143,31 +234,39 @@ int linkedSearch(linkedCell* table, unsigned int size, char key[151]){
     index = hashFunctionA(key, size);
     
     if(table[index].filled){ //ocupada
-        test = (node*) malloc (sizeof(node));
-        test = table[index].first->next;
+        //test = (node*) malloc (sizeof(node));
+        test = table[index].first;
         while(1){
-            //if(test == NULL){
-            if(table[index].first == NULL){
-                return -1;
+            if(test == NULL){
+            //if(table[index].first == NULL){
+                //free(test);
+                printf("\nopa\n");
+                //return -1;
+                return NULL;
             }
             else{
-                /*if(!strcmp(test->key, key)){
-                    return test->data;
+                printf("\nqqq\n");
+                if(!strcmp(test->key, key)){
+                    //return test->data;
+                    return test;
                 }
-                test = test->next;*/
-                if(!strcmp(table[index].first->key, key)){
+                /*if(!strcmp(table[index].first->key, key)){
                     return table[index].first->data;
-                }
-                //test = test->next;
-                table[index].first = table[index].first->next;
+                }*/
+                test = test->next;
+                //test = (node*) malloc (sizeof(node));
+                //table[index].first = table[index].first->next;
             }
         }
     }
     else{
-        return -1;
+        printf("\nXopaX\n");
+        //return -1;
+        return NULL;
     }
-    
-    return -1;
+    printf("\nYopaY\n");
+    //return -1;
+    return NULL;
 }
 /*
 int linearRehash(cell* table, unsigned int size, char key[151], int data){

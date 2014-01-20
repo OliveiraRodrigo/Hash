@@ -20,6 +20,8 @@ int main(void) {
     
     for(i = 0; i < maxSize; i++){
         table[alt][i].filled = 0;
+        table[alt][i].first = NULL;
+        table[alt][i].last = NULL;
     }
     
     printf("\r\n-----------------------------------------------\r\n");
@@ -32,7 +34,7 @@ int main(void) {
             timer(0, START);
         }
         
-        /*printf("\n|");
+        printf("\n|");
         for(i = 0; i < maxSize; i++){
             if(table[alt][i].filled)
                 printf(" %d |", table[alt][i].filled);
@@ -51,7 +53,7 @@ int main(void) {
             else
                 printf("   |");
         }
-        printf("\n\n\n\n\n\n\n");*/
+        printf("\n\n\n\n\n\n\n");
         
         scanf("%s", key);
         
@@ -84,7 +86,7 @@ int main(void) {
                 if(linkedInsert(table[alt], maxSize, key, data) == 0){
                     size++;
                     //printf("[%d]\r\n", size);
-                    //printf("0\n");
+                    printf("0\n");
                 }
                 else{
                     //printf("-1\n");
@@ -96,7 +98,7 @@ int main(void) {
             if(temp == 13 || temp == 10){ //ENTER
                 //printf("Buscar: Key: '%s': ", key);
                 //printf("[%d]\n", linearSearch(table[alt], maxSize, key));
-                printf("[%d]\n", linkedSearch(table[alt], maxSize, key));
+                printf("[%d]\n", linkedSearch(table[alt], maxSize, key)->data);
             }
             else{
                 printf("          [%07d]\r\n", size);
@@ -105,7 +107,7 @@ int main(void) {
             }
         }
         
-        if(t == 10){
+        if(t == 1000){
             t = 0;
             printf("          [%07d]", size);
             printf(" %12.3lf\r\n", timer(0, STOP));

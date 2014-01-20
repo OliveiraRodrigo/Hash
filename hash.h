@@ -24,17 +24,19 @@ typedef struct{
 typedef struct node{
     char key[151];
     int data;
+    struct node * prev;
     struct node * next;
 } node;
 
 typedef struct{
     short filled; //ocupada
     node * first;
+    node * last;
 } linkedCell;
 
-#define initialSize 100
+#define initialSize 5
 #define expansionFactor 2.0
-#define loadFactor 0.8 // 0.0 <= x <= 1.0 
+#define loadFactor 0.8 // 0.0 <= x <= 1.0
 
 #define OFF   0
 #define ON    1
@@ -54,6 +56,6 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data);
 
 int linearSearch(cell* table, unsigned int size, char key[151]);
 
-int linkedSearch(linkedCell* table, unsigned int size, char key[151]);
+/*int*/node * linkedSearch(linkedCell* table, unsigned int size, char key[151]);
 
 int linearRehash(cell* table[2], short alt, unsigned int size, char key[151], int data);
