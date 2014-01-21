@@ -1,7 +1,7 @@
 #include "hash.h"
 #include <string.h>
 
-int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
+int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data, unsigned int * retSize){
     
     unsigned int index;
     node *test;
@@ -18,8 +18,10 @@ int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data){
         //test->next = temp;
         if(table[index].filled){
             return 0;
+            //return 1;
         }
         table[index].filled = True;
+        *retSize = *retSize + 1;
         return 1;
     }
     else{
@@ -33,7 +35,7 @@ node * linkedSearch(linkedCell* table, unsigned int * index, unsigned int size, 
     
     node *test;
     
-    *index = hashFunctionA(key, size);
+    *index = hashFunction(key, size);
     
     if(table[*index].filled){ //ocupada
         test = table[*index].first;
@@ -59,7 +61,7 @@ node * linkedSearch(linkedCell* table, unsigned int * index, unsigned int size, 
     return NULL;
 }
 
-int linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data){
+int linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize){
     
     unsigned int oldSize, i;
     node *temp;
@@ -74,7 +76,7 @@ int linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[15
         if(table[!alt][i].filled){
             temp = table[!alt][i].first;
             while(temp != NULL){
-                linkedInsert(table[alt], size, table[!alt][i].first->key, table[!alt][i].first->data);
+                linkedInsert(table[alt], size, table[!alt][i].first->key, table[!alt][i].first->data, retSize);
                 //printf("OK: %d\n", i);
                 temp = temp->next;
                 free(table[!alt][i].first);
@@ -84,7 +86,7 @@ int linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[15
     }
     
     //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
-    if(linkedInsert(table[alt], size, key, data)){
+    if(linkedInsert(table[alt], size, key, data, retSize)){
         return 1;
     }
     return 0;

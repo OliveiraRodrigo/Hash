@@ -12,7 +12,7 @@ int main(void) {
     maxSize = initialSize; //vai aumentar quando fizer rehashing (disparado pelo fator de carga limite)
     trigger = 1 + maxSize * loadFactor;
     size = 0;
-    alt = 0; //alterna entre as 2 tabelas, a partir um rehash
+    alt = 0; //alterna entre as 2 tabelas, a partir de um rehash
     //cell *table[2];
     linkedCell *table[2];
     node * test;
@@ -55,13 +55,16 @@ int main(void) {
                 printf("   |");
         }
         printf("\n\n\n\n\n\n\n");*/
+        display(table[alt], maxSize);
+        printf("Size:[%u]\r\n", size);
+        printf("Trig:[%f]\r\n", trigger);
         
         scanf("%s", key);
         
         temp = getchar();
         if(temp == ' '){
             scanf("%d", &data);
-            if(size+1 == trigger){
+            if(size+1 >= trigger){
                 printf("Rehashing ");
                 //exit(0);
                 timer(1, START);
@@ -69,10 +72,16 @@ int main(void) {
                 maxSize = maxSize * expansionFactor;
                 trigger = 1 + maxSize * loadFactor;
                 /*table[alt] = (cell*) malloc(maxSize * sizeof(cell));
-                if(linearRehash(table, alt, maxSize, key, data)){*/
-                table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
-                if(linkedRehash(table, alt, maxSize, key, data)){
+                if(linearRehash(table, alt, maxSize, key, data)){
                     size++;
+                }
+                else{
+                    
+                }*/
+                table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
+                size = 0;
+                if(linkedRehash(table, alt, maxSize, key, data, &size)){
+                    
                 }
                 else{
                     
@@ -85,8 +94,8 @@ int main(void) {
             else{
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
                 //if(linearInsert(table[alt], maxSize, key, data)){
-                if(linkedInsert(table[alt], maxSize, key, data)){
-                    size++;
+                if(linkedInsert(table[alt], maxSize, key, data, &size)){
+                    //size++;
                 }
                 else{
                     
@@ -122,7 +131,7 @@ int main(void) {
         }
         t++;
     }
-    display(table[alt], maxSize);
+    //display(table[alt], maxSize);
     return (EXIT_SUCCESS);
 }
 
