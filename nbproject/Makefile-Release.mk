@@ -36,7 +36,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/functions.o \
-	${OBJECTDIR}/hash.o
+	${OBJECTDIR}/hash.o \
+	${OBJECTDIR}/linear.o \
+	${OBJECTDIR}/linked.o
 
 
 # C Compiler Flags
@@ -72,6 +74,16 @@ ${OBJECTDIR}/hash.o: hash.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/hash.o hash.c
+
+${OBJECTDIR}/linear.o: linear.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/linear.o linear.c
+
+${OBJECTDIR}/linked.o: linked.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/linked.o linked.c
 
 # Subprojects
 .build-subprojects:
