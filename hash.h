@@ -34,10 +34,12 @@ typedef struct{
     node * last;
 } linkedCell;
 
-#define initialSize 5
+#define initialSize 100
 #define expansionFactor 2.0
 #define loadFactor 0.8 // 0.0 <= x <= 1.0
 
+#define False 0
+#define True  1
 #define OFF   0
 #define ON    1
 #define START 0
@@ -52,10 +54,12 @@ unsigned int hashFunction(char key[151], unsigned int tableSize);
 
 int linearInsert(cell* table, unsigned int size, char key[151], int data);
 
-int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data);
-
 int linearSearch(cell* table, unsigned int size, char key[151]);
 
-/*int*/node ** linkedSearch(linkedCell* table, unsigned int * index, unsigned int size, char key[151]);
-
 int linearRehash(cell* table[2], short alt, unsigned int size, char key[151], int data);
+
+int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data);
+
+node * linkedSearch(linkedCell* table, unsigned int * index, unsigned int size, char key[151]);
+
+int linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data);
