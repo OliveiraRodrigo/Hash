@@ -78,7 +78,7 @@ int main(void) {
                     
                 }
                 //printf("0\r\n");
-                printf("[%07d]", size);
+                printf("[%07u]", size);
                 printf(" %26.3lf\r\n", timer(1, STOP));
                 free(table[!alt]);
             }
@@ -92,7 +92,7 @@ int main(void) {
                     
                 }
                 //printf("0\r\n");
-                //printf(" size[%d]\r\n", size);
+                //printf(" size[%u]\r\n", size);
             }
         }
         else{
@@ -109,7 +109,7 @@ int main(void) {
                 }
             }
             else{
-                printf("          [%07d]\r\n", size);
+                printf("          [%07u]\r\n", size);
                 printf("[FIM]\r\n");
                 break;
             }
@@ -117,11 +117,12 @@ int main(void) {
         
         if(t == 1000){
             t = 0;
-            printf("          [%07d]", size);
+            printf("          [%07u]", size);
             printf(" %12.3lf\r\n", timer(0, STOP));
         }
         t++;
     }
+    display(table[alt], maxSize);
     return (EXIT_SUCCESS);
 }
 
@@ -161,5 +162,21 @@ double timer(short n, short mark){
             state[n] = OFF;
             return time;
             break;
+    }
+}
+
+void display(linkedCell *table, unsigned int size){
+    
+    unsigned int i;
+    node* temp;
+    
+    for(i = 0; i < size; i++){
+        printf("[%u]", i);
+        temp = table[i].first;
+        while(temp != NULL){
+            printf("->[ * ]");
+            temp = temp->next;
+        }
+        printf("\r\n");
     }
 }

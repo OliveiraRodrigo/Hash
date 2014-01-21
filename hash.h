@@ -48,6 +48,8 @@ typedef struct{
 
 double timer(short n, short mark);
 
+void display(linkedCell *table, unsigned int size);
+
 unsigned int hashFunctionA(char key[151], unsigned int tableSize);
 
 unsigned int hashFunction(char key[151], unsigned int tableSize);
