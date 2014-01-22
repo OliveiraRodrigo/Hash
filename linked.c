@@ -19,6 +19,7 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
         table[index].first = test;
         table[index].first->next = temp;
         // ou test->next = temp;
+        //printf("%s\t%d\r\n", key, data);
         return 0;
     }
     else{
@@ -28,6 +29,7 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
         table[index].first->next = NULL;
         table[index].filled = True;
         *retSize = *retSize + 1;
+        printf("%s\t%d\r\n", key, data);
         return 1;
     }
     return 0;

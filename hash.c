@@ -33,7 +33,7 @@ int main(void){
     while(1){
         //printf("t[%d]", t);
         if(t == 1){
-            timer(0, START);
+            //timer(0, START);
         }
         
         /*printf("\n|");
@@ -63,7 +63,7 @@ int main(void){
         scanf("%s", key);
         
         temp = getchar();
-        if(temp == ' '){
+        if(temp == ' ' || temp == '\t'){
             scanf("%d", &data);
             if(size+1 >= trigger){
                 printf("Rehashing ");
@@ -88,9 +88,11 @@ int main(void){
                     //printf("[%u] col\r\n", i++);
                 }
                 //printf("0\r\n");
-                printf("[%07u]", size);
-                printf(" %26.3lf\r\n", timer(1, STOP));
+                //printf("[%07u]", size);
+                //printf(" %26.3lf\r\n", timer(1, STOP));
                 free(table[!alt]);
+                printf("Fim Rehashing ");
+                printf("\r\n");
             }
             else{
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
@@ -106,11 +108,12 @@ int main(void){
                 //printf("0\r\n");
                 //printf(" size[%u]\r\n", size);
                 //printf("maxSize:[%u]\r\n", maxSize);
+                printf("ele[%d]\r\n", linkedSearch(table[alt],maxSize,"A"));
             }
         }
         else{
             if(temp == 13 || temp == 10){ //ENTER
-                //printf("Buscar: Key: '%s': ", key);
+                printf("Buscar: Key: '%s': ", key);
                 //printf("[%d]\n", linearSearch(table[alt], maxSize, key));
                 //test = (node*) malloc(sizeof(node));
                 //test = linkedSearch(table[alt], /*&index,*/ maxSize, key);
@@ -131,12 +134,12 @@ int main(void){
         
         if(t == 1000){
             t = 0;
-            printf("          [%07u]", size);
-            printf(" %12.3lf\r\n", timer(0, STOP));
+            //printf("          [%07u]", size);
+            //printf(" %12.3lf\r\n", timer(0, STOP));
         }
         t++;
     }
-    display(table[alt], maxSize);
+    //display(table[alt], maxSize);
     return (EXIT_SUCCESS);
 }
 
