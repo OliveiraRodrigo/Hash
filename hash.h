@@ -18,25 +18,25 @@ extern "C" {
 typedef struct{
     char key[151];
     int data;
-    short filled; //ocupada
+    /*short*/char filled; //ocupada
 } cell;
 
 typedef struct node{
     char key[151];
     int data;
-    struct node * prev;
+    //struct node * prev;
     struct node * next;
 } node;
 
 typedef struct{
-    short filled; //ocupada
+    /*short*/char filled; //ocupada
     node * first;
-    node * last;
+    //node * last;
 } linkedCell;
 
 #define initialSize 100
 #define expansionFactor 2.0
-#define loadFactor 0.8 // 0.0 <= x <= 1.0
+#define loadFactor 0.43 // 0.0 <= x <= 1.0
 
 #define False 0
 #define True  1
@@ -62,6 +62,6 @@ int linearRehash(cell* table[2], short alt, unsigned int size, char key[151], in
 
 int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data, unsigned int * retSize);
 
-node * linkedSearch(linkedCell* table, unsigned int * index, unsigned int size, char key[151]);
+int /*node **/ linkedSearch(linkedCell* table, /*unsigned int * index,*/ unsigned int size, char key[151]);
 
 int linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize);

@@ -9,19 +9,19 @@
 
 socompila: compila help
 
-compila: functions.c hash.c hash.h
+compila: linear.c linked.c functions.c hash.c hash.h
 
 	@echo  ..............................................................
 	@echo   Making...
 
 # Gera os objetos
-	gcc -c  functions.c hash.c
+	gcc -c  linear.c linked.c functions.c hash.c
 
 # Gera a biblioteca estatica 'hash.a'
 	ar rcs hash.a hash.o
 
 # Liga os objetos e gera o executavel utilizando a biblioteca
-	gcc -o hash hash.o functions.o hash.a
+	gcc -o hash hash.o functions.o linked.o linear.o hash.a
 
 help:
 	@echo  ..............................................................

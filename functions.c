@@ -23,7 +23,7 @@ unsigned int hashFunction(char s[151], unsigned int /*tableSize*/M){
     int intLength = sLength / 4;
     int cLength;
     int i, j, k;
-    char c[151];
+    char c[5];
     double sum = 0, mult = 1;
     unsigned int usum;
     
@@ -43,18 +43,22 @@ unsigned int hashFunction(char s[151], unsigned int /*tableSize*/M){
     
     //o resto da string (para não múltiplos de 4)
     i = intLength * 4;
-    sprintf(c, "%c", s[i]);
+    if(i < sLength){
+        sprintf(c, "%c", s[i]);
+    }
     for(i++; i < sLength; i++){
         sprintf(c, "%s%c", c, s[i]);
     }
     mult = 1;
+    
     cLength = strlen(c);
     for (k = 0; k < cLength; k++) {
         sum += c[k] * mult;
         mult *= 256;
     }
+    //printf("\r\n[%u %% %u]\r\n", (unsigned int) sum, M);
     usum = (unsigned int) sum % M;
-    //printf("\nsum:[%lf]\n", sum);
-    printf("\nusum:[%u]\n", usum);
+    //printf("[%u]\r\n", usum);
+    //printf("\r\n[%u/%u]\r\n", usum, M);
     return(usum);
 }
