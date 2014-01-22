@@ -136,7 +136,7 @@ int main(void){
         }
         t++;
     }
-//    display(table[alt], maxSize);
+    display(table[alt], maxSize);
     return (EXIT_SUCCESS);
 }
 

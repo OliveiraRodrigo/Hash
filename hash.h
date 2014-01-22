@@ -60,8 +60,8 @@ int linearSearch(cell* table, unsigned int size, char key[151]);
 
 int linearRehash(cell* table[2], short alt, unsigned int size, char key[151], int data);
 
-int linkedInsert(linkedCell* table, unsigned int size, char key[151], int data, unsigned int * retSize);
+char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data, unsigned int * retSize);
 
 int /*node **/ linkedSearch(linkedCell* table, /*unsigned int * index,*/ unsigned int size, char key[151]);
 
-int linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize);
+char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize);
