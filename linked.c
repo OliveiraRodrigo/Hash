@@ -7,9 +7,7 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
     node *test;
     node *temp;
     
-    //test = linkedSearch(table, &index, size, key);
-    
-    index = hashFunction(key, size);
+    index = hashFunctionA(key, size);
     
     if(table[index].filled){
         temp = table[index].first;
@@ -18,7 +16,6 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
         test->data = data;
         table[index].first = test;
         table[index].first->next = temp;
-        // ou test->next = temp;
         //printf("[]%s\t%d\r\n", key, data);
         return 0;
     }
@@ -35,24 +32,22 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
     return 0;
 }
 
-int /*node **/ linkedSearch(linkedCell* table, /*unsigned int * index,*/ unsigned int size, char key[151]){
+int linkedSearch(linkedCell* table, unsigned int size, char key[151]){
     
     node *test;
     unsigned int index;
     
-    /***/index = hashFunction(key, size);
+    index = hashFunctionA(key, size);
     
-    if(table[/***/index].filled){ //ocupada
-        test = table[/***/index].first;
+    if(table[index].filled){ //ocupada
+        test = table[index].first;
         while(1){
             if(test == NULL){
                 return -1;
-                //return NULL;
             }
             else{
                 if(!strcmp(test->key, key)){
                     return test->data;
-                    //return test;
                 }
                 test = test->next;
             }
@@ -60,10 +55,8 @@ int /*node **/ linkedSearch(linkedCell* table, /*unsigned int * index,*/ unsigne
     }
     else{
         return -1;
-        //return NULL;
     }
     return -1;
-    //return NULL;
 }
 
 char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize){
@@ -106,10 +99,8 @@ char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[1
     //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
     if(linkedInsert(table[alt], size, key, data, retSize)){
         //printf("'%s'\r\n", key);
-        //printf("[__ / %u]\r\n", size);
         return 1;
     }
     //printf("'%s'\r\n", key);
-    //printf("[__ / %u]\r\n", size);
     return 0;
 }

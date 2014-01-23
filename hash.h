@@ -18,20 +18,18 @@ extern "C" {
 typedef struct{
     char key[151];
     int data;
-    /*short*/char filled; //ocupada
+    char filled; //ocupada
 } cell;
 
 typedef struct node{
     char key[151];
     int data;
-    //struct node * prev;
     struct node * next;
 } node;
 
 typedef struct{
-    /*short*/char filled; //ocupada
+    char filled; //ocupada
     node * first;
-    //node * last;
 } linkedCell;
 
 #define initialSize 100
@@ -46,7 +44,7 @@ typedef struct{
 #define GET   1
 #define STOP  2
 
-double timer(short n, short mark);
+double timer(char n, char mark);
 
 void display(linkedCell *table, unsigned int size);
 
@@ -62,6 +60,6 @@ int linearRehash(cell* table[2], short alt, unsigned int size, char key[151], in
 
 char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data, unsigned int * retSize);
 
-int /*node **/ linkedSearch(linkedCell* table, /*unsigned int * index,*/ unsigned int size, char key[151]);
+int linkedSearch(linkedCell* table, unsigned int size, char key[151]);
 
 char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize);
