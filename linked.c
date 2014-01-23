@@ -19,7 +19,7 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
         table[index].first = test;
         table[index].first->next = temp;
         // ou test->next = temp;
-        //printf("%s\t%d\r\n", key, data);
+        //printf("[]%s\t%d\r\n", key, data);
         return 0;
     }
     else{
@@ -29,7 +29,7 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
         table[index].first->next = NULL;
         table[index].filled = True;
         *retSize = *retSize + 1;
-        printf("%s\t%d\r\n", key, data);
+        //printf("%s\t%d\r\n", key, data);
         return 1;
     }
     return 0;
@@ -68,8 +68,8 @@ int /*node **/ linkedSearch(linkedCell* table, /*unsigned int * index,*/ unsigne
 
 char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize){
     
-    unsigned int oldSize, i;
-    node *temp;
+    unsigned int oldSize, i, n;
+    node *temp, **invert;
     
     for(i = 0; i < size; i++){
         table[alt][i].filled = False;
@@ -80,17 +80,26 @@ char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[1
     
     for(i = 0; i < oldSize; i++){
         if(table[!alt][i].filled){
+            //Guarda todos numa lista temporaria, para inserir de tras pra frente
+            n = 0;
+            invert = (node**) malloc(sizeof(node*));
             while(table[!alt][i].first != NULL){
+                invert = (node**) realloc(invert, (n+1)*sizeof(node*));
+                invert[n] = (node*) malloc(sizeof(node));
                 temp = table[!alt][i].first;
-                linkedInsert(table[alt], size, temp->key, temp->data, retSize);
-                //printf("OK: %d\r\n", i);
-                //printf("[__ / %u]\r\n", size);
-                //free(table[!alt][i].first);
-                //table[!alt][i].first = (node*) malloc(sizeof(node));
+                strcpy(invert[n]->key, temp->key);
+                invert[n]->data = temp->data;
                 table[!alt][i].first = table[!alt][i].first->next;
-                //printf("\r\n%s\r\n", temp->key);
                 free(temp);
+                n++;
             }
+            while(n > 0){
+                n--;
+                linkedInsert(table[alt], size, invert[n]->key, invert[n]->data, retSize);
+                free(invert[n]);
+                //printf("\r\n%s\r\n", temp->key);
+            }
+            free(invert);
         }
     }
     

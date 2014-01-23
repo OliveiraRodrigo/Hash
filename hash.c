@@ -66,8 +66,8 @@ int main(void){
         if(temp == ' ' || temp == '\t'){
             scanf("%d", &data);
             if(size+1 >= trigger){
-                printf("Rehashing ");
-                printf("\r\n");
+                //printf("Rehashing ");
+                //printf("\r\n");
                 //exit(0);
                 timer(1, START);
                 alt = !alt;
@@ -91,8 +91,8 @@ int main(void){
                 //printf("[%07u]", size);
                 //printf(" %26.3lf\r\n", timer(1, STOP));
                 free(table[!alt]);
-                printf("Fim Rehashing ");
-                printf("\r\n");
+                //printf("Fim Rehashing ");
+                //printf("\r\n");
             }
             else{
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
@@ -108,12 +108,12 @@ int main(void){
                 //printf("0\r\n");
                 //printf(" size[%u]\r\n", size);
                 //printf("maxSize:[%u]\r\n", maxSize);
-                printf("ele[%d]\r\n", linkedSearch(table[alt],maxSize,"A"));
+                //printf("ele[%d]\r\n", linkedSearch(table[alt],maxSize,"GUZMHFOCAFFAPEDNUUOJCQVWLMLUDNGURWPWEBROMQBUNSHSWDHMFWUZGVSTLSN"));
             }
         }
         else{
             if(temp == 13 || temp == 10){ //ENTER
-                printf("Buscar: Key: '%s': ", key);
+                //printf("Buscar: Key: '%s': ", key);
                 //printf("[%d]\n", linearSearch(table[alt], maxSize, key));
                 //test = (node*) malloc(sizeof(node));
                 //test = linkedSearch(table[alt], /*&index,*/ maxSize, key);
