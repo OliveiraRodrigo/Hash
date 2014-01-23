@@ -72,7 +72,7 @@ int main(void){
                 //printf("\r\n");
                 timer(1, START);
                 alt = !alt; //Alterna as tabelas. Agora a principal sera a nova.
-                maxSize = maxSize * (int) expansionFactor; //Expande a tabela nova.
+                maxSize = maxSize * expansionFactor; //Expande a tabela nova.
                 trigger = (float) (1 + maxSize * loadFactor); //Atualiza o gatilho.
                 //Partiu REHASH!
                 /*table[alt] = (cell*) malloc(maxSize * sizeof(cell));
@@ -178,12 +178,12 @@ double timer(char n, char mark){
     }
 }
 
-void display(linkedCell *table, unsigned int size){
+void display(linkedCell *table, unsigned int maxSize){
     
     unsigned int i;
     node* temp;
     
-    for(i = 0; i < size; i++){
+    for(i = 0; i < maxSize; i++){
         printf("[%u]", i);
         temp = table[i].first;
         while(temp != NULL){

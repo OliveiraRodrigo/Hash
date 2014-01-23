@@ -1,13 +1,13 @@
 #include "hash.h"
 #include <string.h>
 
-char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data, unsigned int * retSize){
+char linkedInsert(linkedCell* table, unsigned int maxSize, char key[151], int data, unsigned int * size){
     
     unsigned int index;
     node *test;
     node *temp;
     
-    index = hashFunctionA(key, size);
+    index = hashFunctionA(key, maxSize);
     
     if(table[index].filled){
         temp = table[index].first;
@@ -25,19 +25,19 @@ char linkedInsert(linkedCell* table, unsigned int size, char key[151], int data,
         table[index].first->data = data;
         table[index].first->next = NULL;
         table[index].filled = True;
-        *retSize = *retSize + 1;
+        *size = *size + 1;
         //printf("%s\t%d\r\n", key, data);
         return 1;
     }
     return 0;
 }
 
-int linkedSearch(linkedCell* table, unsigned int size, char key[151]){
+int linkedSearch(linkedCell* table, unsigned int maxSize, char key[151]){
     
     node *test;
     unsigned int index;
     
-    index = hashFunctionA(key, size);
+    index = hashFunctionA(key, maxSize);
     
     if(table[index].filled){ //ocupada
         test = table[index].first;
@@ -59,17 +59,17 @@ int linkedSearch(linkedCell* table, unsigned int size, char key[151]){
     return -1;
 }
 
-char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[151], int data, unsigned int * retSize){
+char linkedRehash(linkedCell* table[2], short alt, unsigned int maxSize, char key[151], int data, unsigned int * size){
     
     unsigned int oldSize, i, n;
     node *temp, **invert;
     
-    for(i = 0; i < size; i++){
+    for(i = 0; i < maxSize; i++){
         table[alt][i].filled = False;
     }
     
-    oldSize = size / (int) expansionFactor;
-    *retSize = 0;
+    oldSize = maxSize / (int) expansionFactor;
+    *size = 0;
     
     for(i = 0; i < oldSize; i++){
         if(table[!alt][i].filled){
@@ -88,7 +88,7 @@ char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[1
             }
             while(n > 0){
                 n--;
-                linkedInsert(table[alt], size, invert[n]->key, invert[n]->data, retSize);
+                linkedInsert(table[alt], maxSize, invert[n]->key, invert[n]->data, size);
                 free(invert[n]);
                 //printf("\r\n%s\r\n", temp->key);
             }
@@ -97,7 +97,7 @@ char linkedRehash(linkedCell* table[2], short alt, unsigned int size, char key[1
     }
     
     //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
-    if(linkedInsert(table[alt], size, key, data, retSize)){
+    if(linkedInsert(table[alt], maxSize, key, data, size)){
         //printf("'%s'\r\n", key);
         return 1;
     }

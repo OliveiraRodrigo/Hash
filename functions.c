@@ -1,7 +1,7 @@
 #include "hash.h"
 #include <string.h>
 
-unsigned int hashFunctionA(char key[151], unsigned int tableSize){
+unsigned int hashFunctionA(char key[151], unsigned int maxSize){
     
     unsigned int i, h, keySize;
     
@@ -11,13 +11,13 @@ unsigned int hashFunctionA(char key[151], unsigned int tableSize){
         h += key[i]*31*keySize;
         //printf("\n[%c] h: '%u'", key[i], h);
     }
-    h = h%tableSize;
+    h = h%maxSize;
     //printf("\nh final: '%u'\n", h);
     return h;
     
 }
 
-unsigned int hashFunction(char s[151], unsigned int /*tableSize*/M){
+unsigned int hashFunction(char s[151], unsigned int maxSize){
     
     int sLength = strlen(s);
     int intLength = sLength / 4;
@@ -28,20 +28,18 @@ unsigned int hashFunction(char s[151], unsigned int /*tableSize*/M){
     unsigned int usum;
     
     for(j = 0; j < intLength; j++){
-        //c = s.substring(j * 4, (j * 4) + 4).toCharArray();
         sprintf(c, "%c", s[j*4]);
         for(i = 1; i < 4; i++){
             sprintf(c, "%s%c", c, s[i+ j*4]);
         }
         mult = 1;
-        //cLength = strlen(c);
-        for (k = 0; k < 4/*cLength*/; k++) {
+        for (k = 0; k < 4; k++) {
 	    sum += c[k] * mult;
             mult *= 256;
         }
     }
     
-    //o resto da string (para não múltiplos de 4)
+    //o resto da string (para nao multiplos de 4)
     i = intLength * 4;
     if(i < sLength){
         sprintf(c, "%c", s[i]);
@@ -57,8 +55,8 @@ unsigned int hashFunction(char s[151], unsigned int /*tableSize*/M){
         mult *= 256;
     }
     //printf("\r\n[%u %% %u]\r\n", (unsigned int) sum, M);
-    usum = (unsigned int) sum % M;
+    usum = (unsigned int) sum % maxSize;
     //printf("[%u]\r\n", usum);
     //printf("\r\n[%u/%u]\r\n", usum, M);
-    return(usum);
+    return usum;
 }
