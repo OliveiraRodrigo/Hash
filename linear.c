@@ -1,7 +1,7 @@
 #include "hash.h"
 #include <string.h>
 
-int linearInsert(cell* table, unsigned int maxSize, string key, int data){
+bool linearInsert(cell* table, unsigned int maxSize, string key, int data){
     
     unsigned int index, start;
     
@@ -13,7 +13,8 @@ int linearInsert(cell* table, unsigned int maxSize, string key, int data){
         if(table[index].filled){ //ocupada
             if(!strcmp(table[index].key, key)){
                 table[index].data = data;
-                return 0;
+                //Nao e' chave nova: nao incrementa o tamanho.
+                return False;
             }
             if(index < maxSize){
                 index++;
@@ -26,12 +27,13 @@ int linearInsert(cell* table, unsigned int maxSize, string key, int data){
             strcpy(table[index].key, key);
             table[index].data = data;
             table[index].filled = True;
-            return 1;
+            //Chave nova: incrementa o tamanho.
+            return True;
         }
     }
     while(start != index);
     
-    return 0;
+    return False;
 }
 
 int linearSearch(cell* table, unsigned int maxSize, string key){
@@ -70,7 +72,7 @@ int linearSearch(cell* table, unsigned int maxSize, string key){
     return -1;
 }
 
-int linearRehash(cell* table[2], short alt, unsigned int maxSize, string key, int data){
+bool linearRehash(cell* table[2], bool alt, unsigned int maxSize, string key, int data){
     
     unsigned int oldSize, i;
     
@@ -89,9 +91,11 @@ int linearRehash(cell* table[2], short alt, unsigned int maxSize, string key, in
     
     //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
     if(linearInsert(table[alt], maxSize, key, data)){
-        return 1;
+        //Foi inserida chave nova: incrementa o tamanho.
+        return True;
     }
-    return 0;
+    //Foi inserida chave que ja tinha: nao incrementa o tamanho.
+    return False;
 }
 
 void displayLinear(cell *table, unsigned int maxSize){

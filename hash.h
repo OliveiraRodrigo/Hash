@@ -16,7 +16,7 @@ extern "C" {
 #include <stdlib.h>
 
 #define string char*
-
+#define bool char
 #define False 0
 #define True  1
 
@@ -36,13 +36,13 @@ typedef struct{
     unsigned int size;
     unsigned int maxSize;
     float trigger;
-    char alt;
+    bool alt;
 } tableControl;
 
 typedef struct{
     char key[151];
     int data;
-    char filled; //ocupada
+    bool filled; //ocupada
 } cell;
 
 typedef struct node{
@@ -52,11 +52,11 @@ typedef struct node{
 } node;
 
 typedef struct{
-    char filled; //ocupada
+    bool filled; //ocupada
     node * first;
 } linkedCell;
 
-/* Dois temporizadores: n == 0 ou 1
+/* Tres timers: n == [0 a 2]
  * mark == START, GET ou STOP */
 double timer(char n, char mark);
 
@@ -67,25 +67,25 @@ unsigned int hashFunctionA(string key, unsigned int maxSize);
 unsigned int hashFunction(string key, unsigned int maxSize);
 
 /* Insere na lista com tratamento de colisao por busca linear */
-int linearInsert(cell* table, unsigned int maxSize, string key, int data);
+bool linearInsert(cell* table, unsigned int maxSize, string key, int data);
 
 /* Busca na lista com tratamento de colisao por busca linear */
 int linearSearch(cell* table, unsigned int maxSize, string key);
 
 /* Rehash a lista com tratamento de colisao por busca linear */
-int linearRehash(cell* table[2], short alt, unsigned int maxSize, string key, int data);
+bool linearRehash(cell* table[2], bool alt, unsigned int maxSize, string key, int data);
 
 /* Visualizacao tosca da lista ... linear, melhor para tabelas pequenas */
 void displayLinear(cell *table, unsigned int maxSize);
 
 /* Insere na lista com tratamento de colisao por encadeamento */
-char linkedInsert(linkedCell* table, unsigned int maxSize, string key, int data, unsigned int * size);
+bool linkedInsert(linkedCell* table, unsigned int maxSize, string key, int data, unsigned int * size);
 
 /* Busca na lista com tratamento de colisao por encadeamento */
 int linkedSearch(linkedCell* table, unsigned int maxSize, string key);
 
 /* Rehash a lista com tratamento de colisao por encadeamento */
-char linkedRehash(linkedCell* table[2], short alt, unsigned int maxSize, string key, int data, unsigned int * size);
+bool linkedRehash(linkedCell* table[2], bool alt, unsigned int maxSize, string key, int data, unsigned int * size);
 
 /* Visualizacao tosca da lista ... encadeamento */
 void displayLinked(linkedCell *table, unsigned int maxSize);

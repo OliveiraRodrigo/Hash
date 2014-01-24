@@ -7,7 +7,7 @@ char linkedInsert(linkedCell* table, unsigned int maxSize, string key, int data,
     node *test;
     node *temp;
     
-    index = hashFunctionA(key, maxSize);
+    index = hashFunction(key, maxSize);
     
     if(table[index].filled){
         temp = table[index].first;
@@ -17,7 +17,8 @@ char linkedInsert(linkedCell* table, unsigned int maxSize, string key, int data,
         table[index].first = test;
         table[index].first->next = temp;
         //printf("[]%s\t%d\r\n", key, data);
-        return 0;
+        //Insercao com colisao: nao aumentou o tamanho da tabela.
+        return False;
     }
     else{
         table[index].first = (node*) malloc(sizeof(node));
@@ -27,9 +28,10 @@ char linkedInsert(linkedCell* table, unsigned int maxSize, string key, int data,
         table[index].filled = True;
         *size = *size + 1;
         //printf("%s\t%d\r\n", key, data);
-        return 1;
+        //Insercao sem colisao: aumentou o tamanho da tabela.
+        return True;
     }
-    return 0;
+    return False;
 }
 
 int linkedSearch(linkedCell* table, unsigned int maxSize, string key){
@@ -37,7 +39,7 @@ int linkedSearch(linkedCell* table, unsigned int maxSize, string key){
     node *test;
     unsigned int index;
     
-    index = hashFunctionA(key, maxSize);
+    index = hashFunction(key, maxSize);
     
     if(table[index].filled){ //ocupada
         test = table[index].first;
@@ -59,7 +61,7 @@ int linkedSearch(linkedCell* table, unsigned int maxSize, string key){
     return -1;
 }
 
-char linkedRehash(linkedCell* table[2], short alt, unsigned int maxSize, string key, int data, unsigned int * size){
+bool linkedRehash(linkedCell* table[2], bool alt, unsigned int maxSize, string key, int data, unsigned int * size){
     
     unsigned int oldSize, i, n;
     node *temp, **invert;

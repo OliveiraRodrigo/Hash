@@ -9,7 +9,7 @@ int main(void){
     string key;
     int data;
     char temp;
-    int i, t;
+    int i, ins, search;
     
     //Inicializa os controles e aloca memoria para a tabela principal.
     #define size    ctrl.size
@@ -30,19 +30,19 @@ int main(void){
         table[alt][i].first = NULL;
     }
     
+    printf("Initial Size: %33d\r\n", initialSize);
+    printf("Expansion Factor: %29d\r\n",expansionFactor);
+    printf("Load Factor: %34.2f\r\n", loadFactor);
+    
     printf("\r\n-----------------------------------------------\r\n");
     printf("REHASH   |   SIZE  |  TIME (ms)  | RH TIME (ms)");
     printf("\r\n-----------------------------------------------\r\n\r\n");
     
-    t = 1; //Em 1000, mostra o tempo e reinicia o timer 0.
-    i = 0; //Um contador so pra ajudar nuns printf.
+    ins = 1;    //Em 1000 insercoes, mostra o tempo e reinicia o timer 0.
+    search = 1; //Em 1000 buscas, mostra o tempo e reinicia o timer 2.
+    i = 0;      //Um contador para testes bizarros nao autorizados em humanos.
     
     while(1){
-        
-        if(t == 1){
-            //Inicia o timer 0.
-            timer(0, START);
-        }
         
         //displayLinear(table[alt], maxSize);
         //displayLinked(table[alt], maxSize);
@@ -99,6 +99,10 @@ int main(void){
             }
             //Se o tamanho da tabela NAO for ultrapassar o limite: Insere.
             else{
+                if(ins == 1){
+                    //Inicia o timer 0.
+                    timer(0, START);
+                }
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
                 //printf("'%s'\r\n", key);
                 //if(linearInsert(table[alt], maxSize, key, data)){
@@ -114,14 +118,34 @@ int main(void){
                 //printf("0\r\n");
                 //printf(" size[%u]\r\n", size);
                 //printf("maxSize:[%u]\r\n", maxSize);
+                
+                //Mostra o tempo de 1000 insercoes e para o timer 0.
+                if(ins == 1000){
+                    ins = 0;
+                    printf("          [%07u]", size);
+                    printf(" %12.3lf\r\n", timer(0, STOP));
+                }
+                ins++;
             }
         }
         else{
             //Era 'enter', entao busca a chave.
             if(temp == 13 || temp == 10){
+                if(search == 1){
+                    //Inicia o timer 2.
+                    timer(2, START);
+                }
                 //printf("Buscar: Key: '%s': ", key);
                 //printf("[%d]\n", linearSearch(table[alt], maxSize, key));
-                printf("%d\r\n", linkedSearch(table[alt], maxSize, key));
+                data = linkedSearch(table[alt], maxSize, key);
+                printf("%4d\r\n", data);
+                //Mostra o tempo de 1000 buscas e para o timer 2.
+                /*if(search == 1000){
+                    search = 0;
+                    printf("%4d", data);
+                    printf("%28.3lf\r\n", timer(2, STOP));
+                }
+                search++;*/
             }
             //E' o fim do arquivo.
             else{
@@ -130,14 +154,6 @@ int main(void){
                 break;
             }
         }
-        
-        //Mostra o tempo de 1000 insercoes e para o timer 0.
-        if(t == 1000){
-            t = 0;
-            printf("          [%07u]", size);
-            printf(" %12.3lf\r\n", timer(0, STOP));
-        }
-        t++;
     }
     //display(table[alt], maxSize);
     return (EXIT_SUCCESS);
@@ -145,8 +161,8 @@ int main(void){
 
 double timer(char n, char mark){
     
-    static char state[2] = {OFF, OFF};
-    static double tIn[2] = {0.0, 0.0};
+    static char state[3] = {OFF, OFF, OFF};
+    static double tIn[3] = {0.0, 0.0, 0.0};
     double tOut, time;
     struct timeval getTime;
     
@@ -179,5 +195,11 @@ double timer(char n, char mark){
             state[n] = OFF;
             return time;
             break;
+            
+        /*case PAUSE:
+            break;
+            
+        case RESUME:
+            break;*/
     }
 }
