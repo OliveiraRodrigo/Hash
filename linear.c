@@ -1,7 +1,7 @@
 #include "hash.h"
 #include <string.h>
 
-int linearInsert(cell* table, unsigned int maxSize, char key[151], int data){
+int linearInsert(cell* table, unsigned int maxSize, string key, int data){
     
     unsigned int index, start;
     
@@ -34,7 +34,7 @@ int linearInsert(cell* table, unsigned int maxSize, char key[151], int data){
     return 0;
 }
 
-int linearSearch(cell* table, unsigned int maxSize, char key[151]){
+int linearSearch(cell* table, unsigned int maxSize, string key){
     
     unsigned int index, start;
     
@@ -70,7 +70,7 @@ int linearSearch(cell* table, unsigned int maxSize, char key[151]){
     return -1;
 }
 
-int linearRehash(cell* table[2], short alt, unsigned int maxSize, char key[151], int data){
+int linearRehash(cell* table[2], short alt, unsigned int maxSize, string key, int data){
     
     unsigned int oldSize, i;
     
@@ -92,4 +92,19 @@ int linearRehash(cell* table[2], short alt, unsigned int maxSize, char key[151],
         return 1;
     }
     return 0;
+}
+
+void displayLinear(cell *table, unsigned int maxSize){
+        
+    unsigned int i;
+    
+    printf("\n|");
+    for(i = 0; i < maxSize; i++){
+        if(table[i].filled)
+            printf(" * |");
+        else
+            printf("   |");
+    }
+    printf("\n\n\n\n\n\n\n");
+    
 }

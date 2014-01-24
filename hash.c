@@ -3,21 +3,26 @@
 
 int main(void){
     
-    char key[151], temp;
-    int data;
-    unsigned int size, maxSize, i, t;
-    float trigger;
-    char alt;
     //cell *table[2];
     linkedCell *table[2];
+    tableControl ctrl;
+    string key;
+    int data;
+    char temp;
+    int i, t;
     
-    //Inicializa os controles e aloca a tabela principal
-    maxSize = initialSize; //vai aumentar quando fizer rehashing (disparado pelo fator de carga limite)
+    //Inicializa os controles e aloca memoria para a tabela principal.
+    #define size    ctrl.size
+    #define maxSize ctrl.maxSize
+    #define trigger ctrl.trigger
+    #define alt     ctrl.alt
+    maxSize = initialSize; //Vai aumentar quando fizer rehash (disparado pela carga limite + 1).
     trigger = (float) (1 + maxSize * loadFactor);
     size = 0;
     alt = 0; //Alterna entre as 2 tabelas, a partir de um rehash.
-    //table[alt] = (cell*) malloc(maxSize * sizeof(cell));
+    //table[.alt] = (cell*) malloc(.maxSize * sizeof(cell));
     table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
+    key = (string) malloc(151 * sizeof(char));
     
     //Zera a flag 'filled' e seta o ponteiro 'first' de toda a tabela.
     for(i = 0; i < maxSize; i++){
@@ -30,51 +35,43 @@ int main(void){
     printf("\r\n-----------------------------------------------\r\n\r\n");
     
     t = 1; //Em 1000, mostra o tempo e reinicia o timer 0.
-    i = 0;
+    i = 0; //Um contador so pra ajudar nuns printf.
+    
     while(1){
+        
         if(t == 1){
             //Inicia o timer 0.
             timer(0, START);
         }
         
-        // Apenas para visualizacao
-        /*printf("\n|");
-        for(i = 0; i < maxSize; i++){
-            if(table[alt][i].filled)
-                printf(" %d |", table[alt][i].filled);
-            else
-                printf("   |");
-        }
-        printf("\n|");
-        for(i = 0; i < maxSize; i++){
-            if(table[alt][i].filled){
-                if(table[alt][i].first->next != NULL){
-                    printf(" * |");
-                }
-                else
-                    printf("   |");
-            }
-            else
-                printf("   |");
-        }
-        printf("\n\n\n\n\n\n\n");*/
-        //display(table[alt], maxSize);
+        //displayLinear(table[alt], maxSize);
+        //displayLinked(table[alt], maxSize);
         //printf("Size:[%u]\r\n", size);
         //printf("Trig:[%f]\r\n", trigger);
         
-        scanf("%s", key); //Pega a chave.
+        //Pega a chave.
+        scanf("%s", key);
         
-        temp = getchar(); //Pega o separador: espaco, tab ou enter?
+        //Pega o separador: espaco, tab ou enter?
+        temp = getchar();
+        
         if(temp == ' ' || temp == '\t'){
-            scanf("%d", &data); //Era 'espaco', entao pega o dado.
-            if(size+1 >= trigger){ //O tamanho da tabela ultrapassaria o limite.
+            
+            //Era 'espaco' ou 'tab', entao pega o dado.
+            scanf("%d", &data);
+            
+            //Se o tamanho da tabela for ultrapassar o limite: Rehash it!
+            if(size+1 >= trigger){
+                
                 printf("Rehashing ");
                 //printf("\r\n");
                 timer(1, START);
-                alt = !alt; //Alterna as tabelas. Agora a principal sera a nova.
-                maxSize = maxSize * expansionFactor; //Expande a tabela nova.
+                alt = !alt; //Alterna as tabelas. Agora a nova sera a principal.
+                maxSize *= expansionFactor; //Expande a tabela nova.
                 trigger = (float) (1 + maxSize * loadFactor); //Atualiza o gatilho.
                 //Partiu REHASH!
+                
+                //Aloca memoria para a tabela nova.
                 /*table[alt] = (cell*) malloc(maxSize * sizeof(cell));
                 if(linearRehash(table, alt, maxSize, key, data)){
                     size++;
@@ -82,6 +79,8 @@ int main(void){
                 else{
                     
                 }*/
+                
+                //Aloca memoria para a tabela nova.
                 table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
                 if(linkedRehash(table, alt, maxSize, key, data, &size)){
                     //printf("[%u]\r\n", i++);
@@ -92,17 +91,20 @@ int main(void){
                 //printf("0\r\n");
                 printf("[%07u]", size);
                 printf(" %26.3lf\r\n", timer(1, STOP));
-                free(table[!alt]); //Desaloca a tabela antiga.
+                
+                //Desaloca a tabela antiga.
+                free(table[!alt]);
                 //printf("Fim Rehashing ");
                 //printf("\r\n");
             }
+            //Se o tamanho da tabela NAO for ultrapassar o limite: Insere.
             else{
                 //printf("Inserir:Key: '%s' ::: Data: '%d'", key, data);
                 //printf("'%s'\r\n", key);
                 //if(linearInsert(table[alt], maxSize, key, data)){
                 if(linkedInsert(table[alt], maxSize, key, data, &size)){
                     //Inseriu sem colisao.
-                    //size++;
+                    //size++; //So se for a linear, para atualizar o tamanho aqui.
                     //printf("[%u / %u]\r\n", i++, maxSize);
                 }
                 else{
@@ -115,11 +117,13 @@ int main(void){
             }
         }
         else{
-            if(temp == 13 || temp == 10){ //Era 'enter', entao busca a chave.
-                printf("Buscar: Key: '%s': ", key);
+            //Era 'enter', entao busca a chave.
+            if(temp == 13 || temp == 10){
+                //printf("Buscar: Key: '%s': ", key);
                 //printf("[%d]\n", linearSearch(table[alt], maxSize, key));
-                printf("%d\r\n", linkedSearch(table[alt], /*&index,*/ maxSize, key));
+                printf("%d\r\n", linkedSearch(table[alt], maxSize, key));
             }
+            //E' o fim do arquivo.
             else{
                 printf("          [%07u]\r\n", size);
                 printf("[FIM]\r\n");
@@ -175,21 +179,5 @@ double timer(char n, char mark){
             state[n] = OFF;
             return time;
             break;
-    }
-}
-
-void display(linkedCell *table, unsigned int maxSize){
-    
-    unsigned int i;
-    node* temp;
-    
-    for(i = 0; i < maxSize; i++){
-        printf("[%u]", i);
-        temp = table[i].first;
-        while(temp != NULL){
-            printf("->[ * ]");
-            temp = temp->next;
-        }
-        printf("\r\n");
     }
 }

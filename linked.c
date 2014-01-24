@@ -1,7 +1,7 @@
 #include "hash.h"
 #include <string.h>
 
-char linkedInsert(linkedCell* table, unsigned int maxSize, char key[151], int data, unsigned int * size){
+char linkedInsert(linkedCell* table, unsigned int maxSize, string key, int data, unsigned int * size){
     
     unsigned int index;
     node *test;
@@ -32,7 +32,7 @@ char linkedInsert(linkedCell* table, unsigned int maxSize, char key[151], int da
     return 0;
 }
 
-int linkedSearch(linkedCell* table, unsigned int maxSize, char key[151]){
+int linkedSearch(linkedCell* table, unsigned int maxSize, string key){
     
     node *test;
     unsigned int index;
@@ -59,7 +59,7 @@ int linkedSearch(linkedCell* table, unsigned int maxSize, char key[151]){
     return -1;
 }
 
-char linkedRehash(linkedCell* table[2], short alt, unsigned int maxSize, char key[151], int data, unsigned int * size){
+char linkedRehash(linkedCell* table[2], short alt, unsigned int maxSize, string key, int data, unsigned int * size){
     
     unsigned int oldSize, i, n;
     node *temp, **invert;
@@ -103,4 +103,20 @@ char linkedRehash(linkedCell* table[2], short alt, unsigned int maxSize, char ke
     }
     //printf("'%s'\r\n", key);
     return 0;
+}
+
+void displayLinked(linkedCell *table, unsigned int maxSize){
+    
+    unsigned int i;
+    node* temp;
+    
+    for(i = 0; i < maxSize; i++){
+        printf("[%u]", i);
+        temp = table[i].first;
+        while(temp != NULL){
+            printf("->[ * ]");
+            temp = temp->next;
+        }
+        printf("\r\n");
+    }
 }
