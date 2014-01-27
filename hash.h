@@ -23,7 +23,7 @@ extern "C" {
 /* Table */
 #define initialSize     100
 #define expansionFactor   2
-#define loadFactor      0.2 // 0.0 <= x <= 1.0
+#define loadFactor      0.18 // 0.0 <= x <= 1.0
 
 /* Timer */
 #define OFF   0
