@@ -150,9 +150,9 @@ int main(void){
             }
         }
     }
-    printf("\r\nTotal insertions time: %20.3lf ms\r\n", totInsTime);
-    printf("Total searches time: %22.3lf ms\r\n", totSrchTime);
-    printf("Total execution time: %21.3lf ms\r\n", timer(0, STOP));
+    printf("\r\nTotal insertions time: %20.3lf ms\r\n",  totInsTime + timer(1, STOP));
+    printf("Total searches time: %22.3lf ms\r\n"      , totSrchTime + timer(2, STOP));
+    printf("Total execution time: %21.3lf ms\r\n"     ,               timer(0, STOP));
     //displayLinked(table[alt], maxSize);
     return (EXIT_SUCCESS);
 }
