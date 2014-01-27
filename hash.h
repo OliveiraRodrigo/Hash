@@ -21,16 +21,17 @@ extern "C" {
 #define True  1
 
 /* Table */
-#define initialSize 100
-#define expansionFactor 2
-#define loadFactor 0.43 // 0.0 <= x <= 1.0
+#define initialSize     100
+#define expansionFactor   2
+#define loadFactor      0.2 // 0.0 <= x <= 1.0
 
 /* Timer */
 #define OFF   0
 #define ON    1
 #define START 0
 #define GET   1
-#define STOP  2
+#define PAUSE 2
+#define STOP  3
 
 typedef struct{
     unsigned int size;
@@ -56,8 +57,8 @@ typedef struct{
     node * first;
 } linkedCell;
 
-/* Tres timers: n == [0 a 2]
- * mark == START, GET ou STOP */
+/* Quatro timers: n == [0 a 3]
+ * mark == START, GET, PAUSE ou STOP */
 double timer(char n, char mark);
 
 /* Funcao Hash proposta pelo professor */
@@ -89,3 +90,15 @@ bool linkedRehash(linkedCell* table[2], bool alt, unsigned int maxSize, string k
 
 /* Visualizacao tosca da lista ... encadeamento */
 void displayLinked(linkedCell *table, unsigned int maxSize);
+
+unsigned int RSHash  (char* str, unsigned int len);
+unsigned int JSHash  (char* str, unsigned int len);
+unsigned int PJWHash (char* str, unsigned int len);
+unsigned int ELFHash (char* str, unsigned int len);
+unsigned int BKDRHash(char* str, unsigned int len);
+unsigned int SDBMHash(char* str, unsigned int len);
+unsigned int DJBHash (char* str, unsigned int len);
+unsigned int DEKHash (char* str, unsigned int len);
+unsigned int BPHash  (char* str, unsigned int len);
+unsigned int FNVHash (char* str, unsigned int len);
+unsigned int APHash  (char* str, unsigned int len);

@@ -7,7 +7,7 @@ char linkedInsert(linkedCell* table, unsigned int maxSize, string key, int data,
     node *test;
     node *temp;
     
-    index = hashFunction(key, maxSize);
+    index = DEKHash(key, maxSize);
     
     if(table[index].filled){
         temp = table[index].first;
@@ -39,7 +39,7 @@ int linkedSearch(linkedCell* table, unsigned int maxSize, string key){
     node *test;
     unsigned int index;
     
-    index = hashFunction(key, maxSize);
+    index = DEKHash(key, maxSize);
     
     if(table[index].filled){ //ocupada
         test = table[index].first;
