@@ -10,8 +10,8 @@ int main(void){
     
     timer(0, START); //Tempo total de execucao
     
-    //cell *table[2];
-    linkedCell *table[2];
+    cell *table[2];
+    //linkedCell *table[2];
     tableControl ctrl;
     string key;
     int data;
@@ -25,27 +25,27 @@ int main(void){
     size    = 0;
     alt     = 0; //Alterna entre as 2 tabelas, a partir de um rehash.
     
-    //table[alt] = (cell*)       malloc(maxSize * sizeof(cell));
-    table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
+    table[alt] = (cell*)       malloc(maxSize * sizeof(cell));
+    //table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
     key        = (string)      malloc(151     * sizeof(char));
     
     //Zera a flag 'filled' e seta o ponteiro 'first' de toda a tabela.
     for(i = 0; i < maxSize; i++){
         table[alt][i].filled = False;
-        table[alt][i].first = NULL; //So para a linkedCell.
+        //table[alt][i].first = NULL; //So para a linkedCell.
     }
     
-    printf("Initial Size:     %29d\r\n",   initialSize);
-    printf("Expansion Factor: %29d\r\n",   expansionFactor);
+    printf("Initial Size:     %29d\r\n"  , initialSize);
+    printf("Expansion Factor: %29d\r\n"  , expansionFactor);
     printf("Load Factor:      %29.2f\r\n", loadFactor);
     
     printf("\r\n-----------------------------------------------\r\n");
-    printf("REHASH   |   SIZE  |  TIME (ms)  | RH TIME (ms)");
+    printf("REHASH   | INSERT  |  TIME (ms)  | RH TIME (ms)");
     printf("\r\n-----------------------------------------------\r\n\r\n");
     
     ins    = 1; //Em 1000 insercoes, mostra o tempo e reinicia o timer 1.
     search = 1; //Em 1000 buscas,    mostra o tempo e reinicia o timer 2.
-    i      = 0; //Um contador para testes bizarros nao autorizados em humanos.
+    i      = 1; //Um contador para testes bizarros nao autorizados em humanos.
     
     while(1){
         
@@ -77,23 +77,24 @@ int main(void){
                 //Partiu REHASH!
                 
                 //Aloca memoria para a tabela nova.
-                /*table[alt] = (cell*) malloc(maxSize * sizeof(cell));
+                table[alt] = (cell*) malloc(maxSize * sizeof(cell));
                 if(linearRehash(table, alt, maxSize, key, data)){
                     //Inseriu nova chave.
                     size++;
                 }
                 else{
                     //Reinseriu chave que ja tinha.
-                }*/
-                table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
+                }
+                /*table[alt] = (linkedCell*) malloc(maxSize * sizeof(linkedCell));
                 if(linkedRehash(table, alt, maxSize, key, data, &size)){
                     //Inseriu sem colisao.
                 }
                 else{
                     //Inseriu com colisao.
-                }
+                }*/
                 //printf("0\r\n");
-                printf("[%07u]", size);
+                //printf("[%07u]", size);
+                printf("[%07d]", i);
                 printf(" %26.3lf\r\n", timer(3, STOP));
                 
                 //Desaloca a tabela antiga.
@@ -101,26 +102,30 @@ int main(void){
             }
             //Se o tamanho da tabela NAO for ultrapassar o limite: Insere.
             else{
-                //if(linearInsert(table[alt], maxSize, key, data)){
-                
-                if(linkedInsert(table[alt], maxSize, key, data, &size)){
-                    //Inseriu sem colisao.
-                    //size++; //So se for a linear, para atualizar o tamanho aqui.
+                if(linearInsert(table[alt], maxSize, key, data)){
+                //if(linkedInsert(table[alt], maxSize, key, data, &size)){
+                    //Linear: Inseriu chave nova.
+                    //Linked: Inseriu sem colisao.
+                    size++; //Apenas a linear atualiza o tamanho aqui!
                 }
                 else{
-                    //Inseriu com colisao.
+                    //Linear: Inseriu chave repetida.
+                    //Linked: Inseriu com colisao.
                 }
                 //printf("0\r\n");
+                //printf("          [%07u]", size);
                 
                 //Mostra o tempo de 1000 insercoes e para o timer 1.
                 if(ins == 1000){
                     ins = 0;
-                    printf("          [%07u]", size);
+                    //printf("          [%07u]", size);
+                    printf("          [%07d]", i);
                     printf(" %12.3lf\r\n", timer(1, GET));
                     totInsTime += timer(1, STOP);
                 }
                 ins++;
             }
+            i++;
         }
         else{
             //Era 'enter', entao busca a chave.
@@ -129,8 +134,8 @@ int main(void){
                 timer(1, PAUSE); //1000 insercoes
                 timer(2, START); //1000 buscas
                 
-                //data = linearSearch(table[alt], maxSize, key);
-                data = linkedSearch(table[alt], maxSize, key);
+                data = linearSearch(table[alt], maxSize, key);
+                //data = linkedSearch(table[alt], maxSize, key);
                 //printf("%4d\r\n", data);
                 
                 //Mostra o tempo de 1000 buscas e para o timer 2.
