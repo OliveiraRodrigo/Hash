@@ -5,7 +5,7 @@ bool linearInsert(cell* table, unsigned int maxSize, string key, int data){
     
     unsigned int index, start;
     
-    index = hashFunctionA(key, maxSize);
+    index = hashFunction(key, maxSize);
     
     maxSize--;
     start = index;
@@ -40,7 +40,7 @@ int linearSearch(cell* table, unsigned int maxSize, string key){
     
     unsigned int index, start;
     
-    index = hashFunctionA(key, maxSize);
+    index = hashFunction(key, maxSize);
     
     maxSize--;
     start = index;

@@ -70,7 +70,7 @@ bool linkedRehash(linkedCell* table[2], bool alt, unsigned int maxSize, string k
         table[alt][i].filled = False;
     }
     
-    oldSize = maxSize / (int) expansionFactor;
+    oldSize = maxSize / expansionFactor;
     *size = 0;
     
     for(i = 0; i < oldSize; i++){
